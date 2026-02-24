@@ -7,6 +7,7 @@ Local Symptom Classifier, and Hospital DB.
 """
 import json
 import hashlib
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -29,10 +30,20 @@ from config import get_settings
 
 settings = get_settings()
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Pre-initialize heavy singletons at startup so logs appear immediately."""
+    get_classifier()   # prints [SymptomClassifier] Trained on N examples...
+    get_rag_engine()   # prints [RAG] Indexed N documents.
+    yield
+
+
 app = FastAPI(
     title="MEDORBY API",
     description="Privacy-First Medical AI — LLM Council Orchestrator with RAG, Local ML, and Hospital DB",
     version="2.0.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -42,6 +53,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# ─── Root ─────────────────────────────────────────────────────────────────────
+
+@app.get("/")
+async def root():
+    return {"service": "MEDORBY API", "version": "2.0.0", "docs": "/docs", "health": "/health"}
 
 
 # ─── Request / Response Models ────────────────────────────────────────────────

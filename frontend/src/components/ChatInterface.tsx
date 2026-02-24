@@ -11,7 +11,7 @@ import {
 import { buildSanitizedPrompt } from "@/lib/sanitizer";
 import { submitFederatedUpdate } from "@/lib/local_learning";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
 
 /* ── Types ─────────────────────────────────────────────────────────────────── */
 interface StageStatus {
@@ -63,10 +63,10 @@ interface UploadedReport {
 }
 
 /* ── Member meta ───────────────────────────────────────────────────────────── */
-const MEMBER_META: Record<string, { label: string; model: string; icon: ReactNode; color: string; bg: string; border: string }> = {
-    member_a: { label: "Member A", model: "Llama 3.3 70B", icon: <Brain style={{ width: 14, height: 14 }} />, color: "#93c5fd", bg: "rgba(59,130,246,0.08)", border: "rgba(59,130,246,0.2)" },
-    member_b: { label: "Member B", model: "Llama 3.1 8B", icon: <Zap style={{ width: 14, height: 14 }} />, color: "#6ee7b7", bg: "rgba(16,185,129,0.08)", border: "rgba(16,185,129,0.2)" },
-    member_c: { label: "Member C", model: "Qwen3 32B", icon: <Cpu style={{ width: 14, height: 14 }} />, color: "#c4b5fd", bg: "rgba(139,92,246,0.08)", border: "rgba(139,92,246,0.2)" },
+const MEMBER_META: Record<string, { label: string; model: string; provider: string; icon: ReactNode; color: string; bg: string; border: string }> = {
+    member_a: { label: "Member A", model: "Llama 3.3 70B", provider: "Groq", icon: <Brain style={{ width: 14, height: 14 }} />, color: "#93c5fd", bg: "rgba(59,130,246,0.08)", border: "rgba(59,130,246,0.2)" },
+    member_b: { label: "Member B", model: "Gemini 2.0 Flash", provider: "Google", icon: <Zap style={{ width: 14, height: 14 }} />, color: "#6ee7b7", bg: "rgba(16,185,129,0.08)", border: "rgba(16,185,129,0.2)" },
+    member_c: { label: "Member C", model: "Mistral Small", provider: "Mistral AI", icon: <Cpu style={{ width: 14, height: 14 }} />, color: "#c4b5fd", bg: "rgba(139,92,246,0.08)", border: "rgba(139,92,246,0.2)" },
 };
 
 const STAGES = [
@@ -122,6 +122,7 @@ function MemberTab({ memberKey, data }: { memberKey: string; data: unknown }) {
                     <span className="member-tab__icon" style={{ color: meta.color }}>{meta.icon}</span>
                     <span className="member-tab__name">{meta.label}</span>
                     <span className="member-tab__model">{meta.model}</span>
+                    <span className="member-tab__model" style={{ opacity: 0.5 }}>· {meta.provider}</span>
                 </div>
                 <div className="member-tab__right">
                     {parsed?.confidence !== undefined && (

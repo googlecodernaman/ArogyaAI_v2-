@@ -17,6 +17,11 @@ def _safe_parse_json(text: str) -> dict:
     if not text:
         return {}
     try:
+        import re
+        # Strip Qwen3 chain-of-thought blocks
+        text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+        # Strip markdown code fences (```json ... ``` or ``` ... ```)
+        text = re.sub(r"```(?:json)?\s*", "", text).replace("```", "").strip()
         start = text.find("{")
         end   = text.rfind("}") + 1
         if start != -1 and end > start:
@@ -74,7 +79,7 @@ async def run_convergence(
 
     # Use the dedicated fast reviewer model for peer ranking
     review_text = await query_groq(
-        COUNCIL_MODELS["reviewer"],
+        COUNCIL_MODELS["reviewer"]["model"],
         [
             {"role": "system", "content": "You are a clinical peer reviewer. Output only valid JSON."},
             {"role": "user",   "content": review_prompt},
@@ -99,31 +104,47 @@ async def run_convergence(
 
 async def run_synthesis(sanitized_prompt: str, convergence_data: dict) -> dict:
     """
-    Chairman synthesises the top-ranked response into a final clinical answer.
-    Only sends the top-ranked member's data to keep the prompt compact.
+    Chairman synthesises ALL 3 council responses (Groq + Gemini + Mistral)
+    into a final clinical answer, weighted by peer-review ranking.
     """
     divergence_results = convergence_data["divergence_results"]
     peer_review        = convergence_data["peer_review"]
     anon_map           = convergence_data["anon_map"]
+    ranking            = peer_review.get("ranking", [])
 
-    # Identify the top-ranked member
-    ranking = peer_review.get("ranking", [])
+    # Build a full summary of all 3 responses with provider context
     rev_map = {v: k for k, v in anon_map.items()}   # letter → member key
-    top_key = rev_map.get(ranking[0]) if ranking else list(divergence_results.keys())[0]
-    top_response = divergence_results.get(top_key, {})
+    provider_labels = {
+        "member_a": "Groq/Llama-3.3-70B",
+        "member_b": "Google/Gemini-2.0-Flash",
+        "member_c": "Mistral/Mistral-Small",
+    }
+
+    all_responses = []
+    for letter in ranking if ranking else list(anon_map.values()):
+        member_key  = rev_map.get(letter)
+        if not member_key:
+            continue
+        provider = provider_labels.get(member_key, member_key)
+        response = divergence_results.get(member_key, {})
+        all_responses.append(
+            f"[{letter} — {provider}]\n{json.dumps(response, indent=2)}"
+        )
 
     synthesis_prompt = (
         f"Case: {sanitized_prompt[:400]}\n\n"
-        f"Best council response:\n{json.dumps(top_response, indent=2)}\n\n"
-        f"Peer ranking: {ranking} — Reasoning: {peer_review.get('reasoning','')}\n\n"
-        f"Synthesise a final clinical answer. "
+        f"All 3 independent council responses (ranked best→worst by peer review):\n\n"
+        + "\n\n".join(all_responses)
+        + f"\n\nPeer ranking reasoning: {peer_review.get('reasoning', '')}\n\n"
+        f"Synthesise a final clinical answer that reconciles agreements and flags disagreements. "
         f"Reply ONLY with JSON keys: "
         f"\"final_differentials\" (list), \"recommended_next_steps\" (list), "
-        f"\"confidence\" (float 0-1), \"red_flag\" (boolean), \"summary\" (string ≤3 sentences)."
+        f"\"confidence\" (float 0-1), \"red_flag\" (boolean), \"summary\" (string ≤3 sentences), "
+        f"\"consensus_level\" (\"high\"|\"medium\"|\"low\" — based on agreement across providers)."
     )
 
     chairman_text = await query_groq(
-        COUNCIL_MODELS["chairman"],
+        COUNCIL_MODELS["chairman"]["model"],
         [
             {"role": "system", "content": "You are the Chairman of a medical AI council. Be concise and accurate."},
             {"role": "user",   "content": synthesis_prompt},

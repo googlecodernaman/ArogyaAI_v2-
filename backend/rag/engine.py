@@ -19,7 +19,8 @@ from typing import Optional
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).parent
-KB_DIR = BASE_DIR / "knowledge_base"
+BACKEND_DIR = BASE_DIR.parent          # backend/
+KB_DIR = BACKEND_DIR / "knowledge_base"
 REPORTS_DIR = BASE_DIR / "user_reports"
 INDEX_DIR = BASE_DIR / "faiss_index"
 
@@ -109,7 +110,7 @@ class RAGEngine:
         self.index.add(tfidf_matrix)
 
         self._is_built = True
-        print(f"[RAG] Indexed {len(self.documents)} documents (dim={dim}).")
+        print(f"[RAG] Indexed {len(self.documents)} documents.")
 
     def rebuild_index(self):
         """Rebuild the index after new documents are added."""

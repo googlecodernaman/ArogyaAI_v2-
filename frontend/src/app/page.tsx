@@ -28,11 +28,11 @@ const PIPELINE = [
 ];
 
 const COUNCIL = [
-  { label: "Member A", model: "Llama 3.3 70B", role: "Divergence", color: "#3b82f6", icon: Brain },
-  { label: "Member B", model: "Llama 3.1 8B Instant", role: "Divergence", color: "#10b981", icon: Zap },
-  { label: "Member C", model: "Qwen3 32B", role: "Divergence", color: "#8b5cf6", icon: Cpu },
-  { label: "Reviewer", model: "Llama 3.1 8B", role: "Convergence", color: "#06b6d4", icon: Eye },
-  { label: "Chairman", model: "Llama 3.3 70B", role: "Synthesis", color: "#f59e0b", icon: GitMerge },
+  { label: "Member A", model: "Llama 3.3 70B", provider: "Groq", role: "Divergence", color: "#3b82f6", icon: Brain },
+  { label: "Member B", model: "Gemini 2.0 Flash", provider: "Google", role: "Divergence", color: "#10b981", icon: Zap },
+  { label: "Member C", model: "Mistral Small", provider: "Mistral AI", role: "Divergence", color: "#8b5cf6", icon: Cpu },
+  { label: "Reviewer", model: "Llama 3.1 8B", provider: "Groq", role: "Convergence", color: "#06b6d4", icon: Eye },
+  { label: "Chairman", model: "Llama 3.3 70B", provider: "Groq", role: "Synthesis", color: "#f59e0b", icon: GitMerge },
 ];
 
 export default function Home() {
@@ -185,7 +185,7 @@ export default function Home() {
           </div>
 
           <div className="council-grid">
-            {COUNCIL.map(({ label, model, role, color, icon: Icon }) => (
+            {COUNCIL.map(({ label, model, provider, role, color, icon: Icon }) => (
               <div key={label} className="council-card"
                 onMouseEnter={e => { e.currentTarget.style.borderColor = `${color}44`; e.currentTarget.style.boxShadow = `0 0 24px ${color}22`; e.currentTarget.style.transform = "translateY(-5px)"; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"; e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}>
@@ -194,6 +194,7 @@ export default function Home() {
                 </div>
                 <div className="council-card__label">{label}</div>
                 <div className="council-card__model">{model}</div>
+                <div className="council-card__model" style={{ opacity: 0.5, fontSize: "0.7rem" }}>{provider}</div>
                 <span className="council-card__badge" style={{ background: `${color}18`, color, border: `1px solid ${color}33` }}>
                   {role}
                 </span>

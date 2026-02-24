@@ -67,7 +67,7 @@ export async function submitFederatedUpdate(
     clientId: string,
     originalResponse: string,
     userCorrection: string,
-    backendUrl: string = "http://localhost:8000"
+    backendUrl: string = "http://localhost:8080"
 ): Promise<{ success: boolean; message: string }> {
     try {
         const rawGradients = computeSimulatedGradient(originalResponse, userCorrection);
@@ -97,7 +97,7 @@ export async function submitFederatedUpdate(
  * Download the latest global adapter from the aggregator.
  */
 export async function downloadLatestAdapter(
-    backendUrl: string = "http://localhost:8000"
+    backendUrl: string = "http://localhost:8080"
 ): Promise<number[] | null> {
     try {
         const response = await fetch(`${backendUrl}/api/federated/adapter`);
