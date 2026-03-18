@@ -29,7 +29,7 @@ const PIPELINE = [
 
 const COUNCIL = [
   { label: "Member A", model: "Llama 3.3 70B", provider: "Groq", role: "Divergence", color: "#3b82f6", icon: Brain },
-  { label: "Member B", model: "Gemini 2.0 Flash", provider: "Google", role: "Divergence", color: "#10b981", icon: Zap },
+  { label: "Member B", model: "DeepSeek Chat", provider: "DeepSeek", role: "Divergence", color: "#10b981", icon: Zap },
   { label: "Member C", model: "Mistral Small", provider: "Mistral AI", role: "Divergence", color: "#8b5cf6", icon: Cpu },
   { label: "Reviewer", model: "Llama 3.1 8B", provider: "Groq", role: "Convergence", color: "#06b6d4", icon: Eye },
   { label: "Chairman", model: "Llama 3.3 70B", provider: "Groq", role: "Synthesis", color: "#f59e0b", icon: GitMerge },

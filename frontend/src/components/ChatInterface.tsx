@@ -1,23 +1,24 @@
 "use client";
 import type { ReactNode } from "react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
     Send, Shield, Activity, Brain, CheckCircle,
     Loader2, ThumbsUp, ThumbsDown, AlertTriangle,
     ChevronDown, ChevronUp, Bot, Cpu, Zap, GitMerge,
     Phone, Eye, Sparkles, Upload, FileText, Trash2,
-    Database, Search, Stethoscope, X
+    Database, Search, Stethoscope, X, Layers
 } from "lucide-react";
 import { buildSanitizedPrompt } from "@/lib/sanitizer";
 import { submitFederatedUpdate } from "@/lib/local_learning";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
 /* ── Types ─────────────────────────────────────────────────────────────────── */
 interface StageStatus {
-    divergence: "idle" | "running" | "complete";
-    convergence: "idle" | "running" | "complete";
-    synthesis: "idle" | "running" | "complete";
+    divergence:    "idle" | "running" | "complete";
+    convergence:   "idle" | "running" | "complete";
+    synthesis:     "idle" | "running" | "complete";
+    hybrid_fusion: "idle" | "running" | "complete";
 }
 interface MemberData {
     differentials?: string[];
@@ -54,6 +55,33 @@ interface RAGInfo {
     topics: string[];
 }
 
+interface StructuredPrediction {
+    prediction: {
+        category: string;
+        label: string;
+        severity: string;
+        confidence: number;
+        probabilities: Record<string, number>;
+        model: string;
+    } | null;
+    vital_interpretation: Record<string, string>;
+}
+
+interface HybridDecision {
+    final_category: string;
+    label: string;
+    severity: string;
+    confidence: number;
+    is_emergency: boolean;
+    recommended_action: string;
+    score_breakdown: Record<string, number>;
+    sources: {
+        text_classifier: { category: string | null; confidence: number | null };
+        federated_nn:    { category: string | null; confidence: number | null };
+        llm_council:     { category: string | null; confidence: number | null };
+    };
+}
+
 interface UploadedReport {
     id: string;
     filename: string;
@@ -65,14 +93,15 @@ interface UploadedReport {
 /* ── Member meta ───────────────────────────────────────────────────────────── */
 const MEMBER_META: Record<string, { label: string; model: string; provider: string; icon: ReactNode; color: string; bg: string; border: string }> = {
     member_a: { label: "Member A", model: "Llama 3.3 70B", provider: "Groq", icon: <Brain style={{ width: 14, height: 14 }} />, color: "#93c5fd", bg: "rgba(59,130,246,0.08)", border: "rgba(59,130,246,0.2)" },
-    member_b: { label: "Member B", model: "Gemini 2.0 Flash", provider: "Google", icon: <Zap style={{ width: 14, height: 14 }} />, color: "#6ee7b7", bg: "rgba(16,185,129,0.08)", border: "rgba(16,185,129,0.2)" },
+    member_b: { label: "Member B", model: "DeepSeek Chat", provider: "DeepSeek", icon: <Zap style={{ width: 14, height: 14 }} />, color: "#6ee7b7", bg: "rgba(16,185,129,0.08)", border: "rgba(16,185,129,0.2)" },
     member_c: { label: "Member C", model: "Mistral Small", provider: "Mistral AI", icon: <Cpu style={{ width: 14, height: 14 }} />, color: "#c4b5fd", bg: "rgba(139,92,246,0.08)", border: "rgba(139,92,246,0.2)" },
 };
 
 const STAGES = [
-    { key: "divergence" as const, label: "Divergence", icon: <Brain style={{ width: 13, height: 13 }} />, desc: "3 models reasoning" },
-    { key: "convergence" as const, label: "Convergence", icon: <Eye style={{ width: 13, height: 13 }} />, desc: "Peer review" },
-    { key: "synthesis" as const, label: "Synthesis", icon: <GitMerge style={{ width: 13, height: 13 }} />, desc: "Chairman decides" },
+    { key: "divergence"    as const, label: "Divergence",  icon: <Brain style={{ width: 13, height: 13 }} />, desc: "3 models reasoning" },
+    { key: "convergence"   as const, label: "Convergence", icon: <Eye style={{ width: 13, height: 13 }} />,   desc: "Peer review" },
+    { key: "synthesis"     as const, label: "Synthesis",   icon: <GitMerge style={{ width: 13, height: 13 }} />, desc: "Chairman decides" },
+    { key: "hybrid_fusion" as const, label: "Fusion",      icon: <Layers style={{ width: 13, height: 13 }} />,  desc: "Hybrid decision" },
 ];
 
 const SEVERITY_COLORS: Record<string, { color: string; bg: string; border: string }> = {
@@ -171,6 +200,178 @@ function MemberTab({ memberKey, data }: { memberKey: string; data: unknown }) {
     );
 }
 
+/* ── Structured (FNN) prediction card ─────────────────────────────────────── */
+const VITAL_STATUS_COLORS: Record<string, string> = {
+    normal: "#6ee7b7", elevated: "#fbbf24",
+    stage1_hypertension: "#f97316", stage2_hypertension: "#ef4444",
+    hypertensive_crisis: "#b91c1c",
+    tachycardia: "#f97316", severe_tachycardia: "#ef4444",
+    bradycardia: "#93c5fd", severe_bradycardia: "#3b82f6",
+    mild_hypoxia: "#fbbf24", severe_hypoxia: "#f97316", critical_hypoxia: "#ef4444",
+    overweight: "#fbbf24", obesity_class1: "#f97316",
+    obesity_class2: "#ef4444", morbid_obesity: "#b91c1c", underweight: "#93c5fd",
+};
+
+function StructuredPredictionCard({ data }: { data: StructuredPrediction }) {
+    const { prediction, vital_interpretation } = data;
+    if (!prediction) return null;
+    const sev = SEVERITY_COLORS[prediction.severity];
+    return (
+        <div className="classification-card animate-fade-in" style={{
+            background: sev?.bg || "rgba(148,163,184,0.08)",
+            border: `1px solid ${sev?.border || "rgba(148,163,184,0.2)"}`,
+        }}>
+            <div className="classification-card__header">
+                <Activity style={{ width: 16, height: 16, color: sev?.color || "#94a3b8" }} />
+                <span className="classification-card__title">Federated NN (Vitals)</span>
+                <span className="classification-card__badge" style={{
+                    color: sev?.color, background: sev?.bg,
+                    border: `1px solid ${sev?.border}`,
+                }}>
+                    {prediction.severity}
+                </span>
+            </div>
+            <div className="classification-card__body">
+                <div className="classification-card__label">{prediction.label}</div>
+                <div className="classification-card__conf">
+                    Confidence: {Math.round(prediction.confidence * 100)}%
+                </div>
+                {Object.keys(vital_interpretation).length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 6 }}>
+                        {Object.entries(vital_interpretation).map(([k, v]) => (
+                            <span key={k} style={{
+                                fontSize: 11, padding: "2px 7px", borderRadius: 10,
+                                background: "rgba(0,0,0,0.15)",
+                                color: VITAL_STATUS_COLORS[v] || "#94a3b8",
+                                border: `1px solid ${VITAL_STATUS_COLORS[v] || "#94a3b8"}40`,
+                            }}>
+                                {k.replace(/_/g, " ")}: {v.replace(/_/g, " ")}
+                            </span>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+/* ── Hybrid decision fusion card ───────────────────────────────────────────── */
+function HybridDecisionCard({ hybrid }: { hybrid: HybridDecision }) {
+    const [showBreakdown, setShowBreakdown] = useState(false);
+    const sev = SEVERITY_COLORS[hybrid.severity] ?? SEVERITY_COLORS.moderate;
+
+    const sourceRows = [
+        { key: "Federated NN",      data: hybrid.sources.federated_nn },
+        { key: "Text Classifier",   data: hybrid.sources.text_classifier },
+        { key: "LLM Council",       data: hybrid.sources.llm_council },
+    ];
+    const topScore = Math.max(...Object.values(hybrid.score_breakdown));
+
+    return (
+        <div className="result-card animate-fade-in" style={{
+            border: `1px solid ${hybrid.is_emergency ? "rgba(239,68,68,0.4)" : sev.border}`,
+            background: hybrid.is_emergency ? "rgba(239,68,68,0.06)" : sev.bg,
+        }}>
+            {/* Header */}
+            <div className="result-card__header">
+                <div className="result-card__icon">
+                    <Layers />
+                </div>
+                <span className="result-card__title">Hybrid Decision Fusion</span>
+                <span className="result-card__conf" style={{ color: sev.color }}>
+                    {Math.round(hybrid.confidence * 100)}% confidence
+                </span>
+            </div>
+
+            {/* Primary verdict */}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                <span style={{
+                    fontSize: 15, fontWeight: 600, color: sev.color,
+                }}>
+                    {hybrid.label}
+                </span>
+                <span style={{
+                    fontSize: 11, padding: "2px 8px", borderRadius: 10,
+                    background: sev.bg, color: sev.color,
+                    border: `1px solid ${sev.border}`,
+                }}>
+                    {hybrid.severity}
+                </span>
+                {hybrid.is_emergency && (
+                    <span style={{
+                        fontSize: 11, padding: "2px 8px", borderRadius: 10,
+                        background: "rgba(239,68,68,0.12)", color: "#f87171",
+                        border: "1px solid rgba(239,68,68,0.3)", fontWeight: 600,
+                    }}>
+                        EMERGENCY
+                    </span>
+                )}
+            </div>
+
+            {/* Recommended action */}
+            <div style={{
+                padding: "8px 12px", borderRadius: 6, marginBottom: 12,
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                fontSize: 13, color: "#e2e8f0",
+            }}>
+                <strong style={{ color: sev.color }}>Action: </strong>
+                {hybrid.recommended_action}
+            </div>
+
+            {/* Score bar chart */}
+            <div style={{ marginBottom: 10 }}>
+                {Object.entries(hybrid.score_breakdown).map(([cat, score]) => (
+                    <div key={cat} style={{ marginBottom: 4 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#94a3b8", marginBottom: 2 }}>
+                            <span>{cat.replace(/_/g, " ")}</span>
+                            <span>{Math.round(score * 100)}%</span>
+                        </div>
+                        <div style={{ height: 4, borderRadius: 2, background: "rgba(255,255,255,0.07)" }}>
+                            <div style={{
+                                height: "100%", borderRadius: 2,
+                                width: `${(score / (topScore || 1)) * 100}%`,
+                                background: cat === hybrid.final_category ? sev.color : "rgba(148,163,184,0.3)",
+                                transition: "width 0.4s ease",
+                            }} />
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Source breakdown toggle */}
+            <button
+                onClick={() => setShowBreakdown(!showBreakdown)}
+                style={{
+                    background: "none", border: "none", cursor: "pointer",
+                    display: "flex", alignItems: "center", gap: 5,
+                    fontSize: 11, color: "#64748b", padding: 0,
+                }}
+            >
+                {showBreakdown ? <ChevronUp style={{ width: 12, height: 12 }} /> : <ChevronDown style={{ width: 12, height: 12 }} />}
+                Source contributions
+            </button>
+            {showBreakdown && (
+                <div style={{ marginTop: 6, display: "flex", flexDirection: "column", gap: 4 }}>
+                    {sourceRows.map(({ key, data: src }) => (
+                        <div key={key} style={{
+                            display: "flex", justifyContent: "space-between",
+                            fontSize: 11, padding: "4px 8px", borderRadius: 4,
+                            background: "rgba(255,255,255,0.04)",
+                        }}>
+                            <span style={{ color: "#94a3b8" }}>{key}</span>
+                            <span style={{ color: "#e2e8f0" }}>
+                                {src.category ?? "—"}
+                                {src.confidence != null ? ` · ${Math.round(src.confidence * 100)}%` : ""}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
 /* ── Main ──────────────────────────────────────────────────────────────────── */
 export default function ChatInterface() {
     const [symptoms, setSymptoms] = useState("");
@@ -178,7 +379,7 @@ export default function ChatInterface() {
     const [sex, setSex] = useState("");
     const [vitals, setVitals] = useState({ heart_rate: "", spo2: "", systolic_bp: "" });
     const [loading, setLoading] = useState(false);
-    const [stages, setStages] = useState<StageStatus>({ divergence: "idle", convergence: "idle", synthesis: "idle" });
+    const [stages, setStages] = useState<StageStatus>({ divergence: "idle", convergence: "idle", synthesis: "idle", hybrid_fusion: "idle" });
     const [result, setResult] = useState<CouncilResult | null>(null);
     const [emergency, setEmergency] = useState<Emergency>({ active: false, reason: "", message: "" });
     const [feedbackSent, setFeedbackSent] = useState(false);
@@ -188,6 +389,8 @@ export default function ChatInterface() {
     // New state for RAG/ML features
     const [classification, setClassification] = useState<Classification | null>(null);
     const [ragInfo, setRagInfo] = useState<RAGInfo | null>(null);
+    const [structuredPrediction, setStructuredPrediction] = useState<StructuredPrediction | null>(null);
+    const [hybridDecision, setHybridDecision] = useState<HybridDecision | null>(null);
     const [reports, setReports] = useState<UploadedReport[]>([]);
     const [uploading, setUploading] = useState(false);
     const [showReports, setShowReports] = useState(false);
@@ -203,7 +406,7 @@ export default function ChatInterface() {
     }, []);
 
     // Fetch on first render
-    useState(() => { fetchReports(); });
+    useEffect(() => { fetchReports(); }, [fetchReports]);
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -242,7 +445,9 @@ export default function ChatInterface() {
         setShowMembers(false);
         setClassification(null);
         setRagInfo(null);
-        setStages({ divergence: "idle", convergence: "idle", synthesis: "idle" });
+        setStructuredPrediction(null);
+        setHybridDecision(null);
+        setStages({ divergence: "idle", convergence: "idle", synthesis: "idle", hybrid_fusion: "idle" });
         setFeedbackSent(false);
 
         const sanitizedPrompt = buildSanitizedPrompt(symptoms, age ? parseInt(age) : undefined, sex || undefined);
@@ -288,24 +493,54 @@ export default function ChatInterface() {
                         const event = JSON.parse(dataLine.slice(6));
                         if (event.stage === "classification" && event.data) {
                             setClassification(event.data);
+                        } else if (event.stage === "structured_prediction" && event.data) {
+                            setStructuredPrediction(event.data);
                         } else if (event.stage === "rag_retrieval" && event.data) {
                             setRagInfo(event.data);
                         } else if (event.stage === "divergence") {
                             setStages(s => ({ ...s, divergence: event.status === "complete" ? "complete" : "running" }));
-                            if (event.data) councilResult.divergence = event.data;
+                            if (event.data) setResult(prev => ({ ...(prev || {}), divergence: event.data } as CouncilResult));
                         } else if (event.stage === "convergence") {
                             setStages(s => ({ ...s, convergence: event.status === "complete" ? "complete" : "running" }));
-                            if (event.data) councilResult.convergence = event.data;
+                            if (event.data) setResult(prev => ({ ...(prev || {}), convergence: event.data } as CouncilResult));
                         } else if (event.stage === "synthesis") {
                             setStages(s => ({ ...s, synthesis: event.status === "complete" ? "complete" : "running" }));
-                            if (event.data) councilResult.synthesis = event.data;
+                            if (event.data) setResult(prev => ({ ...(prev || {}), synthesis: event.data } as CouncilResult));
+                        } else if (event.stage === "hybrid_fusion" && event.data) {
+                            setStages(s => ({ ...s, hybrid_fusion: "complete" }));
+                            setHybridDecision(event.data);
+                        } else if (event.stage === "error") {
+                            console.error("Stream error event:", event.message);
+                            alert("Council processing error: " + event.message);
+                            break;
                         }
-                    } catch { /* skip */ }
+                    } catch (err) {
+                        console.error("Parse error for part:", part, err);
+                    }
                 }
             }
-            setResult(councilResult as CouncilResult);
-        } catch (e) { console.error("Council error:", e); }
-        finally { setLoading(false); }
+            
+            // Flush remaining buffer if any
+            if (buffer.trim()) {
+                const dataLine = buffer.split("\n").find(l => l.startsWith("data: "));
+                if (dataLine) {
+                    try {
+                        const event = JSON.parse(dataLine.slice(6));
+                        if (event.stage === "hybrid_fusion" && event.data) {
+                            setStages(s => ({ ...s, hybrid_fusion: "complete" }));
+                            setHybridDecision(event.data);
+                        } else if (event.stage === "synthesis") {
+                            setStages(s => ({ ...s, synthesis: event.status === "complete" ? "complete" : "running" }));
+                            if (event.data) setResult(prev => ({ ...(prev || {}), synthesis: event.data } as CouncilResult));
+                        }
+                    } catch (e) {}
+                }
+            }
+        } catch (e) {
+            console.error("Council network error:", e);
+        } finally {
+            setLoading(false);
+        }
     }, [symptoms, age, sex, vitals]);
 
     const handleFeedback = async (positive: boolean) => {
@@ -314,7 +549,7 @@ export default function ChatInterface() {
         setFeedbackSent(true);
     };
 
-    const allComplete = stages.divergence === "complete" && stages.convergence === "complete" && stages.synthesis === "complete";
+    const allComplete = stages.divergence === "complete" && stages.convergence === "complete" && stages.synthesis === "complete" && stages.hybrid_fusion === "complete";
 
     return (
         <div>
@@ -444,7 +679,7 @@ export default function ChatInterface() {
             </p>
 
             {/* Classification + RAG pre-stage info */}
-            {(classification || ragInfo) && (
+            {(classification || ragInfo || structuredPrediction) && (
                 <div className="prestage-cards" style={{ marginTop: 16 }}>
                     {/* Classification Card */}
                     {classification && (
@@ -481,6 +716,11 @@ export default function ChatInterface() {
                         </div>
                     )}
 
+                    {/* Structured (FNN) Prediction Card */}
+                    {structuredPrediction && (
+                        <StructuredPredictionCard data={structuredPrediction} />
+                    )}
+
                     {/* RAG Info Card */}
                     {ragInfo && ragInfo.documents_found > 0 && (
                         <div className="rag-card animate-fade-in">
@@ -500,7 +740,7 @@ export default function ChatInterface() {
             )}
 
             {/* Stage progress */}
-            {(loading || result) && (
+            {(loading || result || hybridDecision) && (
                 <div className="stage-bar" style={{ marginTop: 20 }}>
                     <div className="stage-bar__header">
                         <Activity style={{ width: 14, height: 14, color: "#3b82f6" }} />
@@ -531,9 +771,15 @@ export default function ChatInterface() {
             )}
 
             {/* Results */}
-            {result?.synthesis && (
+            {(result?.synthesis || hybridDecision) && (
                 <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 12 }}>
+                    {/* Hybrid Decision Card — primary output */}
+                    {hybridDecision && (
+                        <HybridDecisionCard hybrid={hybridDecision} />
+                    )}
+
                     {/* Consensus card */}
+                    {result?.synthesis && (
                     <div className="result-card">
                         <div className="result-card__header">
                             <div className="result-card__icon">
@@ -610,9 +856,10 @@ export default function ChatInterface() {
                             )}
                         </div>
                     </div>
+                    )}
 
                     {/* Individual member responses */}
-                    {result.divergence && (
+                    {result?.divergence && (
                         <div>
                             <button className="members-toggle" onClick={() => setShowMembers(!showMembers)}>
                                 <Bot style={{ width: 15, height: 15 }} />
@@ -625,7 +872,7 @@ export default function ChatInterface() {
                             </button>
                             {showMembers && (
                                 <div className="animate-fade-in" style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 8 }}>
-                                    {Object.entries(result.divergence).map(([key, val]) => (
+                                    {Object.entries(result?.divergence ?? {}).map(([key, val]) => (
                                         <MemberTab key={key} memberKey={key} data={val} />
                                     ))}
                                 </div>

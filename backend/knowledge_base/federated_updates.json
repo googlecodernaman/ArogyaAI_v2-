@@ -1,0 +1,74 @@
+[
+  {
+    "id": "fkb_d4743c1e4121",
+    "topic": "HHS (Hyperosmolar Hyperglycaemic State)",
+    "source": "edge_hospital",
+    "content": "T2DM with glucose >600 mg/dL, severe dehydration, altered consciousness. IV saline 1L/hr first hour, insulin drip after fluids.",
+    "node_id_hash": "node_xyz",
+    "timestamp": 1773685113.5210757
+  },
+  {
+    "id": "fkb_c2762909e090",
+    "topic": "Acute Pulmonary Oedema Management",
+    "source": "pytest_integration_test",
+    "content": "Acute pulmonary oedema: IV furosemide 40-80mg, GTN infusion if SBP>100, CPAP or BiPAP for respiratory support. Morphine use is controversial.",
+    "node_id_hash": "hospital_node_pytest",
+    "timestamp": 1773685768.3151882
+  },
+  {
+    "id": "fkb_df39532b7fa2",
+    "topic": "Case insight with PII",
+    "source": "pytest",
+    "content": "Patient [NAME], DOB [DATE], called [PHONE] about his chest pain.",
+    "node_id_hash": "node_pii_test",
+    "timestamp": 1773685768.3719835
+  },
+  {
+    "id": "fkb_b726d03fa5f1",
+    "topic": "Acute Pulmonary Oedema Management",
+    "source": "pytest_integration_test",
+    "content": "Acute pulmonary oedema: IV furosemide 40-80mg, GTN infusion if SBP>100, CPAP or BiPAP for respiratory support. Morphine use is controversial.",
+    "node_id_hash": "hospital_node_pytest",
+    "timestamp": 1773685810.7667408
+  },
+  {
+    "id": "fkb_91c990d16fa3",
+    "topic": "Case insight with PII",
+    "source": "pytest",
+    "content": "Patient [NAME], DOB [DATE], called [PHONE] about his chest pain.",
+    "node_id_hash": "node_pii_test",
+    "timestamp": 1773685810.8463078
+  },
+  {
+    "id": "fkb_9bf2865b4cea",
+    "topic": "Acute Pulmonary Oedema Management",
+    "source": "pytest_integration_test",
+    "content": "Acute pulmonary oedema: IV furosemide 40-80mg, GTN infusion if SBP>100, CPAP or BiPAP for respiratory support. Morphine use is controversial.",
+    "node_id_hash": "hospital_node_pytest",
+    "timestamp": 1773685938.0736158
+  },
+  {
+    "id": "fkb_8d77a2daa423",
+    "topic": "Case insight with PII",
+    "source": "pytest",
+    "content": "Patient [NAME], DOB [DATE], called [PHONE] about his chest pain.",
+    "node_id_hash": "node_pii_test",
+    "timestamp": 1773685938.1149988
+  },
+  {
+    "id": "fkb_31f13a0c0c1b",
+    "topic": "Acute Pulmonary Oedema Management",
+    "source": "pytest_integration_test",
+    "content": "Acute pulmonary oedema: IV furosemide 40-80mg, GTN infusion if SBP>100, CPAP or BiPAP for respiratory support. Morphine use is controversial.",
+    "node_id_hash": "hospital_node_pytest",
+    "timestamp": 1773692878.3695035
+  },
+  {
+    "id": "fkb_994e209d830c",
+    "topic": "Case insight with PII",
+    "source": "pytest",
+    "content": "Patient [NAME], DOB [DATE], called [PHONE] about his chest pain.",
+    "node_id_hash": "node_pii_test",
+    "timestamp": 1773692878.4224193
+  }
+]

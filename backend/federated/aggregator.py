@@ -8,7 +8,8 @@ import time
 from pathlib import Path
 from typing import Optional
 import numpy as np
-from federated.dp_privacy import apply_dp, validate_update
+from .dp_privacy import apply_dp, validate_update
+from backend.ml.federated_nn import NN_WEIGHT_DIM, get_federated_nn
 
 ADAPTER_STORE_PATH = Path(__file__).parent.parent / "global_adapters"
 ADAPTER_STORE_PATH.mkdir(exist_ok=True)
@@ -16,9 +17,18 @@ ADAPTER_STORE_PATH.mkdir(exist_ok=True)
 # In-memory buffer of pending client updates
 _pending_updates: list[dict] = []
 _current_version: int = 0
+_global_weights: Optional[list[float]] = None
 
-# Expected dimensionality of adapter deltas (configurable)
-ADAPTER_DIM = 128
+ADAPTER_DIM = NN_WEIGHT_DIM
+
+
+def _ensure_global_weights() -> list[float]:
+    """Load the global model baseline from the local federated NN singleton."""
+    global _global_weights
+    if _global_weights is None:
+        nn = get_federated_nn()
+        _global_weights = nn.get_weights_flat()
+    return _global_weights
 
 
 def receive_update(client_id: str, raw_gradients: list[float]) -> dict:
@@ -57,9 +67,12 @@ def aggregate(min_clients: int = 2) -> Optional[dict]:
     if len(_pending_updates) < min_clients:
         return None
 
-    # FedAvg: simple mean of all updates
+    current = np.array(_ensure_global_weights(), dtype=np.float64)
+
+    # FedAvg: average the submitted noised deltas
     all_updates = np.array([u["update"] for u in _pending_updates])
-    global_adapter = np.mean(all_updates, axis=0).tolist()
+    avg_delta = np.mean(all_updates, axis=0)
+    new_global_weights = (current + avg_delta).tolist()
 
     _current_version += 1
     version_path = ADAPTER_STORE_PATH / f"adapter_v{_current_version}.json"
@@ -67,11 +80,20 @@ def aggregate(min_clients: int = 2) -> Optional[dict]:
         "version": _current_version,
         "num_clients": len(_pending_updates),
         "timestamp": time.time(),
-        "adapter": global_adapter,
+        "adapter": new_global_weights,
+        "avg_delta": avg_delta.tolist(),
+        "adapter_dim": ADAPTER_DIM,
     }
 
     with open(version_path, "w") as f:
         json.dump(metadata, f)
+
+    # Promote this aggregated model as the active global model and persist to local NN.
+    global _global_weights
+    _global_weights = new_global_weights
+    nn = get_federated_nn()
+    nn.set_weights_flat(new_global_weights)
+    nn.save()
 
     _pending_updates.clear()
 
@@ -99,5 +121,6 @@ def get_status() -> dict:
     return {
         "current_version": _current_version,
         "pending_updates": len(_pending_updates),
+        "expected_update_dim": ADAPTER_DIM,
         "adapter_store": str(ADAPTER_STORE_PATH),
     }

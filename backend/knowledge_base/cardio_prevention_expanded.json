@@ -1,0 +1,20 @@
+[
+  {
+    "id": "cpv_001",
+    "topic": "Primary Prevention in High-Risk Adults",
+    "source": "AHA/ACC Primary Prevention Consensus",
+    "content": "Adults with diabetes, chronic kidney disease, strong family history, or multiple risk factors should receive structured cardiovascular prevention. Core actions include blood pressure optimization, LDL lowering, glycemic control, smoking cessation, and regular aerobic plus resistance exercise. Shared decision-making should guide statin intensity and aspirin use, balancing bleeding risk."
+  },
+  {
+    "id": "cpv_002",
+    "topic": "Home Blood Pressure Monitoring Protocol",
+    "source": "Hypertension Best Practice Toolkit",
+    "content": "Home blood pressure should be measured using a validated cuff after 5 minutes seated rest, with back supported and feet on floor. Record two readings in morning and evening for 7 days; discard day 1 and average remaining values. Home average >=135/85 mmHg supports hypertension diagnosis and treatment escalation."
+  },
+  {
+    "id": "cpv_003",
+    "topic": "Secondary Prevention After Acute Coronary Syndrome",
+    "source": "ACS Secondary Prevention Recommendations",
+    "content": "After acute coronary syndrome, guideline-directed secondary prevention includes high-intensity statin, dual antiplatelet therapy when indicated, beta-blocker, ACE inhibitor or ARB, smoking cessation plan, and supervised cardiac rehabilitation. Early follow-up should verify medication adherence and symptom stability."
+  }
+]

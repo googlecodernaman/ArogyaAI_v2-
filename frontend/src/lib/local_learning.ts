@@ -4,7 +4,7 @@
  * applies client-side DP noise, and uploads to the aggregator.
  */
 
-const ADAPTER_DIM = 128; // Must match backend ADAPTER_DIM
+const ADAPTER_DIM = 4773; // Must match backend ADAPTER_DIM (federated NN flat parameter size)
 const CLIP_NORM = 1.0;
 const NOISE_MULTIPLIER = 1.1;
 
@@ -67,7 +67,7 @@ export async function submitFederatedUpdate(
     clientId: string,
     originalResponse: string,
     userCorrection: string,
-    backendUrl: string = "http://localhost:8080"
+    backendUrl: string = "http://localhost:8000"
 ): Promise<{ success: boolean; message: string }> {
     try {
         const rawGradients = computeSimulatedGradient(originalResponse, userCorrection);
@@ -97,7 +97,7 @@ export async function submitFederatedUpdate(
  * Download the latest global adapter from the aggregator.
  */
 export async function downloadLatestAdapter(
-    backendUrl: string = "http://localhost:8080"
+    backendUrl: string = "http://localhost:8000"
 ): Promise<number[] | null> {
     try {
         const response = await fetch(`${backendUrl}/api/federated/adapter`);

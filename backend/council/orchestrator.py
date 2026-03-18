@@ -7,7 +7,7 @@ Stage 3: Synthesis   — Chairman merges top responses into final answer
 """
 import asyncio
 import json
-from council.groq_client import query_council_parallel, query_groq, COUNCIL_MODELS
+from .groq_client import query_council_parallel, query_groq, COUNCIL_MODELS
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -40,6 +40,40 @@ def _summarise_response(parsed: dict) -> str:
     conf  = parsed.get("confidence", "?")
     rf    = parsed.get("red_flag", False)
     return f"Differentials: {diffs} | Confidence: {conf} | RedFlag: {rf}"
+
+
+def _fallback_synthesis_from_divergence(divergence_results: dict[str, dict], reason: str = "") -> dict:
+    """Best-effort synthesis when chairman model is unavailable."""
+    differentials: list[str] = []
+    next_steps: list[str] = []
+    red_flag = False
+
+    for member in divergence_results.values():
+        differentials.extend(member.get("differentials", [])[:2])
+        next_steps.extend(member.get("next_steps", [])[:2])
+        red_flag = red_flag or bool(member.get("red_flag", False))
+
+    # Preserve order while de-duplicating
+    dedup_diffs = list(dict.fromkeys(differentials))[:5]
+    dedup_steps = list(dict.fromkeys(next_steps))[:5]
+
+    if not dedup_diffs:
+        dedup_diffs = ["Insufficient council signal from upstream providers"]
+    if not dedup_steps:
+        dedup_steps = ["Perform in-person clinical assessment if symptoms persist or worsen"]
+
+    return {
+        "final_differentials": dedup_diffs,
+        "recommended_next_steps": dedup_steps,
+        "confidence": 0.35,
+        "red_flag": red_flag,
+        "summary": (
+            "Council synthesis ran in degraded mode due to upstream LLM unavailability. "
+            "Use deterministic triage and local model outputs as primary guidance."
+            + (f" ({reason})" if reason else "")
+        ),
+        "consensus_level": "low",
+    }
 
 
 # ── Stage 1: Divergence ───────────────────────────────────────────────────────
@@ -77,21 +111,26 @@ async def run_convergence(
         f'{{"ranking": ["A", "B", "C"], "reasoning": "brief reason"}}'
     )
 
-    # Use the dedicated fast reviewer model for peer ranking
-    review_text = await query_groq(
-        COUNCIL_MODELS["reviewer"]["model"],
-        [
-            {"role": "system", "content": "You are a clinical peer reviewer. Output only valid JSON."},
-            {"role": "user",   "content": review_prompt},
-        ],
-        temperature=0.1,
-        max_tokens=80,
-    )
-
-    peer_review = _safe_parse_json(review_text)
-    # Fallback: if model didn't return a proper ranking, use default order
-    if not peer_review.get("ranking"):
-        peer_review = {"ranking": list(anon_map.values()), "reasoning": "default order"}
+    # Use the dedicated fast reviewer model for peer ranking.
+    # If unavailable, continue with deterministic fallback order.
+    try:
+        review_text = await query_groq(
+            COUNCIL_MODELS["reviewer"]["model"],
+            [
+                {"role": "system", "content": "You are a clinical peer reviewer. Output only valid JSON."},
+                {"role": "user",   "content": review_prompt},
+            ],
+            temperature=0.1,
+            max_tokens=80,
+        )
+        peer_review = _safe_parse_json(review_text)
+        if not peer_review.get("ranking"):
+            peer_review = {"ranking": list(anon_map.values()), "reasoning": "default order"}
+    except Exception as e:
+        peer_review = {
+            "ranking": list(anon_map.values()),
+            "reasoning": f"fallback order (reviewer unavailable: {type(e).__name__})",
+        }
 
     return {
         "anon_map":           anon_map,
@@ -104,7 +143,7 @@ async def run_convergence(
 
 async def run_synthesis(sanitized_prompt: str, convergence_data: dict) -> dict:
     """
-    Chairman synthesises ALL 3 council responses (Groq + Gemini + Mistral)
+    Chairman synthesises ALL 3 council responses (Groq + DeepSeek + Mistral)
     into a final clinical answer, weighted by peer-review ranking.
     """
     divergence_results = convergence_data["divergence_results"]
@@ -116,7 +155,7 @@ async def run_synthesis(sanitized_prompt: str, convergence_data: dict) -> dict:
     rev_map = {v: k for k, v in anon_map.items()}   # letter → member key
     provider_labels = {
         "member_a": "Groq/Llama-3.3-70B",
-        "member_b": "Google/Gemini-2.0-Flash",
+        "member_b": "DeepSeek/DeepSeek-Chat",
         "member_c": "Mistral/Mistral-Small",
     }
 
@@ -143,17 +182,26 @@ async def run_synthesis(sanitized_prompt: str, convergence_data: dict) -> dict:
         f"\"consensus_level\" (\"high\"|\"medium\"|\"low\" — based on agreement across providers)."
     )
 
-    chairman_text = await query_groq(
-        COUNCIL_MODELS["chairman"]["model"],
-        [
-            {"role": "system", "content": "You are the Chairman of a medical AI council. Be concise and accurate."},
-            {"role": "user",   "content": synthesis_prompt},
-        ],
-        temperature=0.2,
-        max_tokens=600,
-    )
+    try:
+        chairman_text = await query_groq(
+            COUNCIL_MODELS["chairman"]["model"],
+            [
+                {"role": "system", "content": "You are the Chairman of a medical AI council. Be concise and accurate."},
+                {"role": "user",   "content": synthesis_prompt},
+            ],
+            temperature=0.2,
+            max_tokens=600,
+        )
+        parsed = _safe_parse_json(chairman_text)
+        if parsed:
+            return parsed
+    except Exception as e:
+        return _fallback_synthesis_from_divergence(
+            divergence_results,
+            reason=f"chairman unavailable: {type(e).__name__}",
+        )
 
-    return _safe_parse_json(chairman_text)
+    return _fallback_synthesis_from_divergence(divergence_results)
 
 
 # ── Full pipeline (used by non-SSE callers) ───────────────────────────────────

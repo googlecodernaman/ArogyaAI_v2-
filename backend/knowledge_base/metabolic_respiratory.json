@@ -1,0 +1,68 @@
+[
+    {
+        "id": "meta_001",
+        "topic": "Type 2 Diabetes Mellitus — Management",
+        "source": "ADA Standards of Medical Care in Diabetes 2024",
+        "content": "Type 2 diabetes (T2DM) affects 10% of adults worldwide. Diagnosis: fasting glucose ≥126 mg/dL, 2h glucose ≥200 on OGTT, HbA1c ≥6.5%, or random glucose ≥200 with symptoms. Lifestyle: medical nutrition therapy, weight loss (5-10% reduces HbA1c ~0.5-1.5%), 150 min/week moderate exercise. Pharmacotherapy: metformin first-line (unless contraindicated); add GLP-1 agonists (semaglutide preferred for CV benefit, weight loss) or SGLT2 inhibitors (empagliflozin/dapagliflozin for HF/CKD benefit) early. Sulfonylureas cheap but hypoglycemia risk. Insulin for advanced disease or HbA1c >11%. Targets: HbA1c <7% generally, <8% for elderly/frail. Complication screening: annual urine albumin, eGFR, ophthalmology, foot exam, lipids, BP control (<130/80). Statin for all T2DM >40y or established CVD."
+    },
+    {
+        "id": "meta_002",
+        "topic": "Chronic Obstructive Pulmonary Disease (COPD)",
+        "source": "GOLD COPD Guidelines 2024",
+        "content": "COPD is a preventable and treatable disease characterised by persistent airflow limitation (FEV1/FVC <0.7 post-bronchodilator). Caused by cigarette smoke (90%), biomass fuels, air pollution, occupational dust. GOLD stages (A-D) based on spirometry + symptoms (mMRC dyspnea scale, CAT score) + exacerbation history. Symptoms: dyspnea, chronic cough, sputum production. Complications: pulmonary hypertension, cor pulmonale, polycythemia, cachexia. Management: smoking cessation (#1 intervention — slows decline); SABA (albuterol) for rescue; LAMA (tiotropium) + LABA as maintenance; ICS added for high exacerbation risk or eosinophils ≥300. Pulmonary rehabilitation significantly improves QoL. Long-term oxygen if resting PaO2 <55 mmHg or SaO2 <88%. Acute exacerbation: SABA, systemic corticosteroids 5 days, antibiotics (azithromycin/doxycycline for purulent), NIV for PaCO2 elevation."
+    },
+    {
+        "id": "meta_003",
+        "topic": "Asthma — Diagnosis and Management",
+        "source": "GINA Global Asthma Guidelines 2024",
+        "content": "Asthma is a heterogeneous disease with chronic airway inflammation, variable airflow obstruction, and bronchial hyperresponsiveness. Diagnosis: variable respiratory symptoms (wheeze, SOB, cough, chest tightness) + variable expiratory airflow limitation (FEV1/FVC reduction, >12% and >200mL response to bronchodilator, OR >20% diurnal variability). Triggers: allergens, exercise, cold air, viral infections, NSAIDs, beta-blockers. Phenotypes: allergic (most common), non-allergic, late-onset, occupational, aspirin-exacerbated. Stepwise treatment: Step 1-2: as-needed ICS-formoterol (preferred over SABA-only); Step 3: low-dose ICS-LABA; Step 4: medium ICS-LABA; Step 5: high-dose ICS-LABA ± add-on tiotropium, biologic (dupilumab, mepolizumab, omalizumab). Acute severe: SABA + ipratropium, systemic steroids, oxygen, magnesium sulfate, consider heliox/NIV/intubation. FeNO and blood eosinophils guide biologic selection."
+    },
+    {
+        "id": "meta_004",
+        "topic": "Obesity and Metabolic Syndrome",
+        "source": "WHO/AACE Obesity Management Guidelines 2023",
+        "content": "Obesity: BMI ≥30 kg/m². Metabolic syndrome (any 3 of 5): abdominal obesity (waist >102cm men/>88cm women), triglycerides ≥150, HDL <40 men/<50 women, BP ≥130/85, fasting glucose ≥100. Associated with T2DM, CVD, NAFLD/NASH, sleep apnea, certain cancers, osteoarthritis, depression. Medical management: dietary intervention (500-750 kcal deficit, Mediterranean/DASH diet), behavioral therapy, physical activity 300 min/week for weight maintenance. Pharmacotherapy: semaglutide (Ozempic/Wegovy) 15% weight loss; tirzepatide (Zepbound) up to 22%; orlistat (older); phentermine-topiramate; naltrexone-bupropion. Bariatric surgery (Roux-en-Y gastric bypass, sleeve gastrectomy) for BMI ≥40 or ≥35 with comorbidities — most effective long-term with 25-35% weight loss."
+    },
+    {
+        "id": "meta_005",
+        "topic": "Hypothyroidism and Hyperthyroidism",
+        "source": "ATA Thyroid Disease Guidelines 2023",
+        "content": "Hypothyroidism: insufficient thyroid hormone. Primary (99%): elevated TSH, low T4 — commonest cause Hashimoto thyroiditis. Symptoms: fatigue, cold intolerance, weight gain, constipation, bradycardia, depression, dry skin, hair loss, myxedema. Treatment: levothyroxine — target TSH 0.5-2.5 mIU/L. Start low (25-50mcg) in elderly/cardiac patients. Hyperthyroidism: excess thyroid hormone. Causes: Graves' disease (anti-TSH receptor antibodies), toxic nodular goiter, thyroiditis. Symptoms: heat intolerance, weight loss, palpitations, tremor, anxiety, exophthalmos (Graves). Diagnosis: low TSH, elevated FT4/T3, thyroid antibodies, radioiodine scan. Treatment: antithyroids (methimazole first-line, propylthiouracil in pregnancy) — remission 30-50%; radioiodine ablation; surgery. Beta-blockers for symptom control. Thyroid storm: emergency — propylthiouracil, iodine solution, beta-blockers, steroids, cooling."
+    },
+    {
+        "id": "meta_006",
+        "topic": "Chronic Kidney Disease (CKD)",
+        "source": "KDIGO CKD Guidelines 2022",
+        "content": "CKD: kidney damage or eGFR <60 mL/min/1.73m² for >3 months. Staging by GFR (G1-G5) and albuminuria (A1-A3). Causes: diabetic nephropathy (most common), hypertensive nephrosclerosis, glomerulonephritis, polycystic kidney disease. Progression risk: higher with lower GFR, higher albuminuria, uncontrolled BP, proteinuria, diabetes. Management: treat underlying cause; BP target <130/80 with ACE inhibitor or ARB (especially in proteinuric CKD); SGLT2 inhibitors (dapagliflozin, empagliflozin) reduce CKD progression regardless of DM; dietary protein restriction (0.8g/kg); phosphate restriction in G4+; erythropoiesis-stimulating agents + iron for anemia; bicarbonate for metabolic acidosis. Avoid NSAIDs, gadolinium, nephrotoxic drugs. Referral to nephrology at eGFR <30. Renal replacement therapy (dialysis or transplant) at eGFR ~10 or uremic symptoms."
+    },
+    {
+        "id": "meta_007",
+        "topic": "Pneumonia — Community-Acquired (CAP)",
+        "source": "IDSA/ATS CAP Guidelines 2019 (updated 2023)",
+        "content": "CAP is acute infection of the lung parenchyma acquired outside hospital. Leading cause of infectious death. Organisms: Streptococcus pneumoniae (most common), atypicals (Mycoplasma, Chlamydia, Legionella), H. influenzae, respiratory viruses. Diagnosis: new pulmonary infiltrate + ≥2 of: fever, cough, purulent sputum, SOB, pleuritic chest pain. PSI/PORT score or CURB-65 (Confusion, Urea >7, RR ≥30, BP <90/60, age ≥65) guides outpatient vs inpatient decision. CURB-65 ≥2 = hospitalise; ≥3 = consider ICU. Outpatient: macrolide or doxycycline (low comorbidity); beta-lactam + macrolide or respiratory fluoroquinolone (with comorbidity). Inpatient: beta-lactam + macrolide or fluoroquinolone. ICU: beta-lactam + azithromycin + consider antipseudomonal if risk. Legionella/pneumococcal urinary antigens. Duration: 5 days if clinically responding. Influenza/COVID pneumonia: specific antivirals."
+    },
+    {
+        "id": "meta_008",
+        "topic": "Sleep Apnea — Obstructive (OSA)",
+        "source": "AASM Clinical Practice Guidelines 2022",
+        "content": "OSA: repetitive upper airway obstruction during sleep causing apneas/hypopneas (AHI ≥5/hr). Severity: mild 5-15, moderate 15-30, severe >30 events/hr. Risk factors: obesity (most important), male sex, older age, craniofacial abnormalities, neck circumference >17 inches, snoring, alcohol/sedatives. Symptoms: snoring, witnessed apneas, gasping, non-restorative sleep, excessive daytime sleepiness (Epworth Sleepiness Scale), morning headaches, nocturia. Consequences: hypertension (in 70%), AF, stroke, T2DM, depression, motor vehicle accidents. Polysomnography (gold standard) or home sleep apnea testing. Treatment: CPAP (continuous positive airway pressure) — first-line for all severities; auto-CPAP; BiPAP for high pressures or central apnea component; mandibular advancement device for mild-moderate; positional therapy; weight loss; upper airway surgery (UPPP, hypoglossal nerve stimulation for CPAP-intolerant). Cardiovascular risk reduction especially important."
+    },
+    {
+        "id": "meta_009",
+        "topic": "Liver Disease — Cirrhosis and Portal Hypertension",
+        "source": "AASLD Practice Guidelines 2022",
+        "content": "Cirrhosis: irreversible fibrosis disrupting hepatic architecture. Causes: alcohol (30%), NASH/NAFLD (30-35%), hepatitis B/C, autoimmune, hemochromatosis, Wilson's disease, primary biliary cholangitis. Child-Pugh and MELD scores assess severity. Compensated: no decompensating events. Decompensated: variceal hemorrhage, ascites, spontaneous bacterial peritonitis (SBP), hepatic encephalopathy. Management: treat underlying cause (abstinence, DAAs for HCV, NAs for HBV, weight loss for NASH); propranolol/carvedilol for portal hypertension prophylaxis; endoscopic variceal ligation for large varices. Ascites: sodium restriction, spironolactone ± furosemide, paracentesis with albumin for large-volume. SBP: cefotaxime, prophylactic norfloxacin for high-risk. Encephalopathy: lactulose, rifaximin. TIPS for refractory ascites/variceal bleeding. Liver transplantation for selected patients (MELD >15)."
+    },
+    {
+        "id": "meta_010",
+        "topic": "Headache Classification — Migraine, Tension, Cluster",
+        "source": "IHS ICHD-3 Classification / AAN Headache Guidelines",
+        "content": "Migraine: moderate-severe unilateral throbbing pain 4-72h + nausea/vomiting or photophobia/phonophobia; with or without aura (visual, sensory, speech disturbances preceding). Prevalence 15% adults, 3:1 female. Triggers: hormones, sleep disruption, stress, foods. Acute: triptans (sumatriptan) — gold standard for moderate-severe; NSAIDs + metoclopramide for mild. Prevention: topiramate, propranolol, amitriptyline, valproate, CGRP antagonists/mAbs (erenumab, fremanezumab) for chronic migraine. Tension-type: bilateral pressing/tightening, mild-moderate, no nausea — acute: NSAIDs/paracetamol. Cluster headache: severe unilateral periorbital/temporal pain 15-180 min, 1-8/day in clusters, autonomic features (ptosis, lacrimation, rhinorrhea) — acute: 100% O2 + SC sumatriptan; prevention: verapamil, lithium, melatonin. Red flags (SNOOP4): Systemic symptoms, Neurological deficit, Onset sudden, Older age, Positional change, Progressive, Precipitated by Valsalva, Papilledema."
+    },
+    {
+        "id": "meta_011",
+        "topic": "Chronic Low Back Pain",
+        "source": "ACP Clinical Practice Guidelines for Low Back Pain 2024",
+        "content": "Low back pain (LBP): affects 70-80% of adults at some point. Acute (<4 wk), subacute (4-12 wk), chronic (>12 wk). 90% is non-specific (mechanical). Red flags for serious pathology: cancer history, unexplained weight loss, immunosuppression (infection risk), age >50, bowel/bladder dysfunction, saddle anesthesia (cauda equina — emergency), fever, IV drug use, osteoporosis risk (fracture), failed conservative treatment. Imaging NOT recommended for non-specific LBP <6 weeks. MRI if red flags, or neurological deficit, or planning intervention. Treatment: superficial heat; exercise (yoga, tai chi, motor control); manual therapy/massage; CBT/mindfulness; NSAIDs - short-term first-line; muscle relaxants; duloxetine for chronic. Avoid opioids unless all alternatives exhausted. Interventional: epidural steroids for radiculopathy, nerve blocks, radiofrequency ablation. Surgery only for structural lesions with matching symptoms."
+    }
+]

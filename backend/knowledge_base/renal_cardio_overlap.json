@@ -1,0 +1,20 @@
+[
+  {
+    "id": "rco_001",
+    "topic": "Cardiorenal Syndrome Overview",
+    "source": "Cardiorenal Clinical Statement",
+    "content": "Cardiorenal syndrome describes bidirectional dysfunction where acute or chronic cardiac disease worsens kidney function, or kidney disease worsens cardiac status. Clinical warning signs include edema, reduced urine output, rising creatinine, and recurrent heart failure admissions. Management requires careful volume assessment and individualized diuretic strategy."
+  },
+  {
+    "id": "rco_002",
+    "topic": "Hyperkalemia Urgency in CKD and Heart Failure",
+    "source": "KDIGO Hyperkalemia Guidance",
+    "content": "Patients with CKD or heart failure on RAAS inhibitors are at risk of hyperkalemia. Potassium >=6.0 mmol/L or ECG changes require urgent treatment. Immediate actions include membrane stabilization with calcium if indicated, intracellular shift with insulin and glucose, and potassium removal strategies."
+  },
+  {
+    "id": "rco_003",
+    "topic": "SGLT2 Inhibitors Across CKD and Heart Failure",
+    "source": "Cardio-Renal Outcome Trials Summary",
+    "content": "SGLT2 inhibitors improve outcomes in heart failure and chronic kidney disease, including reduced hospitalization risk and slower renal decline. Benefits are seen even in some patients without diabetes. Clinicians should monitor volume status and kidney function shortly after initiation."
+  }
+]

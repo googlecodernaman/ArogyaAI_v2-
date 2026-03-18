@@ -1,0 +1,62 @@
+[
+    {
+        "id": "gen_001",
+        "topic": "Chest Pain Differential Diagnosis",
+        "source": "AHA/ACC Chest Pain Evaluation Guidelines 2021",
+        "content": "Chest pain differential: Cardiac (ACS, stable angina, pericarditis, myocarditis, aortic dissection, Takotsubo), Pulmonary (PE, pneumothorax, pneumonia, pleuritis), GI (GERD, esophageal spasm, peptic ulcer, pancreatitis), Musculoskeletal (costochondritis, rib fracture, muscle strain), Neurological (herpes zoster/shingles before rash), Psychogenic (panic disorder, anxiety). High-risk features requiring urgent evaluation: exertional onset, radiation to arm/jaw/back, diaphoresis, nausea, known CAD or risk factors, ST changes, troponin elevation. Lower-risk features: point tenderness on palpation, positional/pleuritic pain, pain reproduced by movement, young age, no cardiac risk factors, normal ECG and troponins. HEART score or GRACE score for ACS risk stratification. Costochondritis: reproduced by Tietze sign (pressure on costochondral junction). GERD: burning, acid taste, relieved by antacids, worse lying down."
+    },
+    {
+        "id": "gen_002",
+        "topic": "Dyspnea — Evaluation and Common Causes",
+        "source": "ATS Clinical Practice Guidelines on Dyspnea 2022",
+        "content": "Dyspnea (shortness of breath) is a subjective sensation of breathing discomfort. Key assessment: onset (acute vs chronic), severity (MRC scale), triggers, associated symptoms, cardiovascular and pulmonary history. Acute dyspnea causes: acute heart failure (orthopnea, PND, S3 gallop, elevated BNP), pulmonary embolism (pleuritic pain, tachycardia, risk factors), pneumothorax (sudden onset, absent breath sounds), pneumonia (fever, cough, consolidation), acute asthma/COPD exacerbation, anaphylaxis, cardiac tamponade. Chronic dyspnea: COPD (smoking history, obstructive spirometry), interstitial lung disease (bilateral crackles, restrictive pattern), heart failure, pulmonary hypertension (progressive, exertional, signs of RV failure), anemia, deconditioning. Workup: CXR, ECG, BNP/NT-proBNP, CBC, spirometry, ABG, CT/echo as indicated. Pulse oximetry: SpO2 <94% warrants urgent evaluation. Paradoxical breathing and use of accessory muscles indicate severe respiratory distress."
+    },
+    {
+        "id": "gen_003",
+        "topic": "Syncope — Evaluation and Management",
+        "source": "AHA/HRS Syncope Guidelines 2017 (updated 2023)",
+        "content": "Syncope: transient loss of consciousness due to cerebral hypoperfusion, with spontaneous recovery. Types: Vasovagal (neurocardiogenic — most common, 40%): prodrome of nausea/pallor/sweating, triggered by pain/emotion/prolonged standing. Orthostatic hypotension (≥20/10 mmHg drop within 3 min of standing): medication-induced, dehydration, autonomic neuropathy. Cardiac (high-risk): arrhythmias (AF, VT, bradycardia), structural (AS, HOCM, tamponade) — no prodrome, during exertion, injury from fall, family history of SCD. Carotid sinus hypersensitivity. ROSE/Canadian Syncope rules identify high-risk. Red flags: exertional syncope, family history of sudden death, age >60, structural heart disease, abnormal ECG (BBB, QTc prolongation, delta waves, Brugada). Workup: ECG (mandatory), orthostatic BPs, LV function; prolonged monitoring (implantable loop recorder) for recurrent unexplained syncope. Treatment: reassurance for vasovagal, increase fluids/salt, compression stockings, tilt training; treat underlying cause."
+    },
+    {
+        "id": "gen_004",
+        "topic": "Fever — Differential Diagnosis and Management",
+        "source": "Infectious Disease Society of America / WHO Guidelines",
+        "content": "Fever: oral temperature >38.3°C (100.9°F) or rectal >38.5°C. Causes: infection (most common — bacterial, viral, fungal), inflammatory (SLE, RA, IBD, vasculitis), malignancy (lymphoma, leukemia, solid tumors — 'tumor fever'), drug fever (beta-lactams, phenytoin, sulfonamides, allopurinol), thromboembolic disease. Fever of unknown origin (FUO): ≥38.3°C on multiple occasions, >3 weeks, no diagnosis after 1 week of investigation. Dangerous: fever + neutropenia (<500 ANC — oncology emergency requiring immediate antibiotics); fever + stiff neck/photophobia (meningitis); fever + petechiae/purpura (meningococcemia); fever + hypotension/altered mentation (sepsis); fever + rigors (bacteremia, malaria). Evaluation: blood cultures, CBC, CMP, urinalysis/culture, LFTs, CXR. Travel history for tropical infections (malaria, typhoid, dengue). Antipyretics: paracetamol 1g every 4-6h; ibuprofen; avoid aspirin in children (Reye syndrome)."
+    },
+    {
+        "id": "gen_005",
+        "topic": "Anemia — Classification and Management",
+        "source": "ASH Clinical Practice Guidelines 2023",
+        "content": "Anemia: Hb <13g/dL men, <12g/dL women (WHO). Microcytic (MCV <80): iron deficiency (most common worldwide — ferritin <30, low TIBC saturation, treat underlying cause + oral iron); thalassemia (target cell, HbA2 >3.5%); sideroblastic anemia (ring sideroblasts); anemia of chronic inflammation (normal/high ferritin). Normocytic (MCV 80-100): acute blood loss, hemolytic anemia (Coombs test, schistocytes for TTP/HUS, sickle cell), aplastic anemia, CKD anemia. Macrocytic (MCV >100): B12 deficiency (neurological symptoms — peripheral neuropathy, subacute combined degeneration — vegan diet, pernicious anemia, IF antibodies); folate deficiency (pregnancy, alcoholism, methotrexate); hypothyroidism, alcohol, medications. Reticulocyte response distinguishes hypo vs. hyperproliferative. Iron deficiency: oral ferrous sulfate 325mg TID between meals; IV iron (ferric carboxymaltose) for severe/malabsorption. B12: IM cyanocobalamin monthly or high-dose oral."
+    },
+    {
+        "id": "gen_006",
+        "topic": "Abdominal Pain — Acute Causes by Location",
+        "source": "ACG/ASES Abdominal Pain Clinical Guidelines 2023",
+        "content": "Right upper quadrant: biliary colic (colicky, fatty meal trigger, ultrasound shows stones), acute cholecystitis (Murphy sign, fever, prolonged RUQ pain, elevated WBC), hepatitis (jaundice, elevated transaminases), subphrenic abscess. Right lower quadrant: appendicitis (McBurney's point tenderness, Rovsing sign, Psoas sign, alvarado score ≥7), Meckel's diverticulum, ectopic pregnancy, ovarian torsion, mesenteric adenitis. Left upper quadrant/flank: pancreatitis (elevated lipase >3x, Grey Turner/Cullen signs for hemorrhagic, Ranson criteria for severity), splenic pathology, renal colic. Left lower quadrant: diverticulitis, sigmoid volvulus, IBD flare, ovarian pathology. Central/periumbilical: early appendicitis, small bowel obstruction (distension, high-pitched bowel sounds, air-fluid levels on X-ray), mesenteric ischemia (pain out of proportion). Diffuse: peritonitis (rigid board-like abdomen), perforated viscus (free air under diaphragm), mesenteric ischemia. Red flags: pulsatile mass (AAA), weight loss, GI bleeding, severe distension."
+    },
+    {
+        "id": "gen_007",
+        "topic": "Mental Health — Depression and Anxiety",
+        "source": "APA DSM-5-TR / WHO mhGAP Guidelines 2023",
+        "content": "Major Depressive Disorder (MDD): ≥5 symptoms for ≥2 weeks including depressed mood or anhedonia: weight changes, sleep disturbance, psychomotor changes, fatigue, poor concentration, guilt/worthlessness, suicidal ideation (PHQ-9 screening). Treatment: first-line SSRIs (sertraline, escitalopram, fluoxetine) or SNRIs; adequate trial 6-8 weeks; continue 6-12 months after remission; psychotherapy (CBT) equally effective for mild-moderate; combined therapy for moderate-severe. Assess for bipolar (avoid antidepressants alone). Generalized Anxiety Disorder (GAD): excessive worry ≥6 months + ≥3 somatic symptoms — muscle tension, restlessness, fatigue, concentration difficulties, irritability, sleep disturbance (GAD-7 screening). Treatment: SSRIs/SNRIs first-line; buspirone; pregabalin; CBT most durable. Avoid long-term benzodiazepines (dependence, cognitive impairment). All psychiatric conditions: rule out organic causes (thyroid, B12, medications, substance use)."
+    },
+    {
+        "id": "gen_008",
+        "topic": "Preventive Care — Screening Guidelines",
+        "source": "USPSTF Preventive Services Guidelines 2023",
+        "content": "Key cancer screenings: Colorectal cancer — colonoscopy every 10 years starting age 45 (earlier if family history), or annual FIT, or multi-target stool DNA every 1-3 years, or CT colonography every 5 years. Cervical cancer — Pap every 3 years ages 21-65, or Pap+HPV co-test every 5 years ages 30-65. Breast cancer — mammography annually/biennially ages 40-74 (USPSTF: 40+). Lung cancer — annual low-dose CT for smokers aged 50-80 with ≥20 pack-year history. Aortic aneurysm — one-time abdominal ultrasound for men aged 65-75 who ever smoked. Cardiovascular: lipid panel every 4-6 years adults >20; BP screening every 2 years; diabetes screening (fasting glucose or HbA1c) for overweight adults >35. STI: annual chlamydia/gonorrhea screening sexually active women <25 or with risk factors; HIV screening ages 15-65. Immunizations: annual influenza; COVID-19 updated boosters; Tdap; age-appropriate pneumococcal; shingles (RZV) ≥50; RSV vaccine ≥60."
+    },
+    {
+        "id": "gen_009",
+        "topic": "Drug Interactions and Polypharmacy",
+        "source": "FDA Drug Safety / Beers Criteria 2023",
+        "content": "Clinically significant drug interactions: Warfarin + many drugs (NSAIDs increase bleed risk; antibiotics alter gut flora → INR changes; amiodarone → ↑INR). QTc prolongation: macrolides + fluoroquinolones + antipsychotics + antiemetics (ondansetron) + antiarrhythmics — risk of torsades de pointes. Serotonin syndrome: MAOIs + SSRIs/SNRIs, tramadol, linezolid, fentanyl. CYP3A4 inhibitors (fluconazole, clarithromycin, grapefruit) raise levels of statins, cyclosporine, DOACs. CYP3A4 inducers (rifampin, phenytoin, carbamazepine, St John's Wort) reduce efficacy. ACE inhibitors + ARBs together → acute kidney injury. NSAIDs + ACE inhibitors/diuretics → renal impairment. Digoxin toxicity with verapamil, amiodarone, hypokalemia. Beers Criteria (elderly): avoid benzodiazepines, anticholinergics (diphenhydramine, oxybutynin), long-acting sulfonylureas, first-generation antipsychotics, NSAIDs — increased fall risk, cognitive impairment, bleeding. Medication reconciliation at every care transition."
+    },
+    {
+        "id": "gen_010",
+        "topic": "Rheumatoid Arthritis and Inflammatory Arthritis",
+        "source": "ACR Rheumatoid Arthritis Guidelines 2021",
+        "content": "Rheumatoid arthritis (RA): symmetric polyarthritis of small joints (MCPs, PIPs, wrists), morning stiffness >1 hour, systemic features (fatigue, weight loss). Anti-CCP and RF positive in ~70%. Complications: joint destruction, tendon rupture, vasculitis, ILD, cardiovascular disease, Felty syndrome. Treatment treat-to-target (remission or low disease activity). First: methotrexate (weekly oral/SC, folate supplementation); second: hydroxychloroquine, sulfasalazine (SSZ), leflunomide. Biologics (TNF-inhibitors: adalimumab, etanercept, infliximab — first-line biologic); IL-6 inhibitors (tocilizumab, sarilumab); abatacept; rituximab. JAK inhibitors (tofacitinib, baricitinib, upadacitinib): oral, effective, screen for MACE/VTE risk. Short-term corticosteroids as bridge. X-ray: periarticular osteopenia, marginal erosions, joint space narrowing. Cardiovascular risk management critical. Screen for TB, hepatitis before biologics."
+    }
+]

@@ -38,9 +38,11 @@ MEDORBY is a **privacy-first medical AI assistant** that uses a multi-model **LL
 | 🔒 **Zero PII Exposure** | Names, dates, contacts stripped in-browser before any network call |
 | 🔍 **RAG Knowledge Base** | FAISS-indexed AHA/ACC medical guidelines for context-aware responses |
 | 🩺 **Local ML Classifier** | On-device symptom classification — no cloud calls needed |
+| 🧬 **Federated Neural Network** | Lightweight structured-health predictor (12-feature local model) |
 | 📄 **Medical Report Upload** | Upload PDF/DOCX/TXT reports, indexed locally for personalised context |
 | 🏥 **Hospital DB** | SQLite edge storage for anonymised consultation records |
 | 🤝 **Federated Learning** | Your feedback improves the global model via DP-noised gradients |
+| 📚 **Federated Knowledge Base** | Edge nodes can contribute sanitized knowledge snippets for shared RAG context |
 | 🔐 **Encrypted Storage** | Local medical history encrypted with AES-256-GCM |
 | ⚡ **Real-Time Streaming** | Server-Sent Events for live council progress updates |
 | 🚨 **Red-Flag Engine** | Instant emergency detection — no LLM needed for critical cases |
@@ -203,7 +205,9 @@ You can also use the PowerShell launcher scripts:
 | `POST` | `/api/triage` | Deterministic red-flag check (no LLM) |
 | `POST` | `/api/council` | Full council deliberation (SSE streaming) |
 | `POST` | `/api/classify` | Local ML symptom classification |
+| `POST` | `/api/fnn/predict` | Federated NN structured prediction from vitals |
 | `POST` | `/api/rag/retrieve` | RAG knowledge base retrieval |
+| `POST` | `/api/hybrid/assess` | Hybrid deterministic + NN + RAG + council assessment |
 | `GET` | `/api/rag/stats` | RAG engine statistics |
 | `POST` | `/api/reports/upload` | Upload medical report (PDF/DOCX/TXT) |
 | `GET` | `/api/reports` | List uploaded reports |
@@ -214,6 +218,8 @@ You can also use the PowerShell launcher scripts:
 | `POST` | `/api/federated/update` | Submit DP-noised model update |
 | `GET` | `/api/federated/adapter` | Download latest global adapter |
 | `GET` | `/api/federated/status` | Aggregator status |
+| `POST` | `/api/federated/kb/update` | Submit sanitized federated KB entry |
+| `GET` | `/api/federated/kb/status` | Federated KB + RAG status |
 
 ---
 

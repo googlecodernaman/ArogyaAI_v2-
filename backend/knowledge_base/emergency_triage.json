@@ -1,0 +1,62 @@
+[
+    {
+        "id": "emg_001",
+        "topic": "Stroke Recognition (FAST Protocol)",
+        "source": "AHA/ASA Stroke Guidelines 2023",
+        "content": "Stroke is a medical emergency caused by interrupted blood supply to the brain. FAST: Face drooping (asymmetry), Arm weakness (one arm drifts down), Speech difficulty (slurred/strange), Time to call 911. Additional signs: sudden severe headache, vision loss, confusion, balance problems. Two types: ischemic (87%) — clot blocks artery; hemorrhagic (13%) — vessel ruptures. Time is brain: 1.9 million neurons die per minute without treatment. Ischemic stroke window for IV tPA: 4.5 hours; mechanical thrombectomy: up to 24 hours in select patients. Do NOT give aspirin until hemorrhage excluded by CT. Hemorrhagic stroke: control BP, reverse anticoagulation, neurosurgical evaluation. NIHSS scale quantifies neurological deficit. Post-stroke: rehabilitation, secondary prevention (antiplatelets, anticoagulation for AF, BP control, statins)."
+    },
+    {
+        "id": "emg_002",
+        "topic": "Anaphylaxis and Allergic Emergencies",
+        "source": "WAO Anaphylaxis Guidelines 2020 / NIAID",
+        "content": "Anaphylaxis is a severe, life-threatening systemic allergic reaction. Triggers: foods (peanuts, tree nuts, shellfish, milk), medications (penicillin, NSAIDs, contrast dye), insect stings, latex. Diagnostic criteria: rapid onset involving skin/mucosal tissue PLUS respiratory compromise OR hypotension OR end-organ dysfunction after allergen exposure. Symptoms: urticaria, angioedema, bronchospasm, stridor, hypotension, syncope, GI symptoms. Treatment: epinephrine IM (0.3-0.5mg of 1:1000) thigh — FIRST LINE, repeat every 5-15 min; call 911; supine position with legs elevated (if no respiratory distress); IV fluid resuscitation; oxygen; H1/H2 antihistamines; corticosteroids (slow onset, adjunctive). Biphasic reaction occurs in 5-20% — observe 4-8 hours. Discharge with auto-injector prescription (EpiPen). Avoid beta-blockers which impair epinephrine response."
+    },
+    {
+        "id": "emg_003",
+        "topic": "Pulmonary Embolism (PE)",
+        "source": "ESC/AHA PE Guidelines 2023",
+        "content": "Pulmonary embolism is obstruction of pulmonary arteries by thrombus (95% from DVT), fat, air, or amniotic fluid. Risk factors (Virchow's triad): stasis (immobility, AF, heart failure), hypercoagulability (malignancy, OCP, thrombophilia, pregnancy), endothelial injury (surgery, trauma). Classic symptoms: sudden dyspnea, pleuritic chest pain, hemoptysis, tachycardia, hypoxia, calf swelling. Wells score and PERC rule for clinical probability. D-dimer sensitive but not specific (high sensitivity excludes PE in low-probability patients). CT pulmonary angiography (CTPA) is gold standard. Massive PE (hemodynamic instability): systemic thrombolysis (alteplase), catheter-directed thrombolysis, or surgical embolectomy. Sub-massive PE (RV dysfunction without shock): consider systemic thrombolysis if high bleed risk acceptable. Non-massive: anticoagulation (DOACs preferred: rivaroxaban or apixaban, no bridging needed). LMWH for cancer-associated PE. IVC filter if anticoagulation contraindicated."
+    },
+    {
+        "id": "emg_004",
+        "topic": "Diabetic Ketoacidosis (DKA)",
+        "source": "ADA Standards of Medical Care 2023",
+        "content": "DKA is an acute metabolic emergency of type 1 (occasionally type 2) diabetes caused by insulin deficiency leading to hyperglycemia, ketosis, and metabolic acidosis. Triad: blood glucose >250 mg/dL, ketones positive (blood or urine), pH <7.3 / bicarbonate <15. Precipitants: infection, insulin omission, new-onset T1D, MI, medications (steroids, SGLT2i). Symptoms: polyuria, polydipsia, nausea/vomiting, abdominal pain, fruity breath, Kussmaul breathing (deep rapid). Management: IV normal saline 1L/hr initially; insulin infusion 0.1 units/kg/hr (after K+ >3.5); potassium replacement (critical — insulin causes hypokalemia); dextrose added when glucose <200; bicarbonate only if pH <6.9; close monitoring glucose, K+, phosphate every 1-2hr. Resolution: glucose <200, pH >7.3, bicarbonate >15, anion gap closed. Transition to SC insulin before stopping infusion."
+    },
+    {
+        "id": "emg_005",
+        "topic": "Sepsis and Septic Shock",
+        "source": "Surviving Sepsis Campaign Guidelines 2021",
+        "content": "Sepsis is life-threatening organ dysfunction caused by dysregulated host response to infection. Septic shock: sepsis + vasopressor requirement to maintain MAP ≥65 mmHg + lactate >2 mmol/L despite adequate fluid resuscitation. qSOFA screening: altered mentation, RR ≥22, SBP ≤100. SOFA score quantifies organ dysfunction. Common sources: pneumonia (most common), UTI, abdominal, bacteremia. 1-hour bundle: measure lactate; blood cultures before antibiotics; broad-spectrum antibiotics ASAP; 30mL/kg IV crystalloid for hypotension or lactate ≥4; vasopressors (norepinephrine first-line) for persistent hypotension. Source control: drain abscess, remove infected catheter. Reassess fluid responsiveness with dynamic measures. Hydrocortisone for refractory septic shock. Monitor for AKI, ARDS, DIC, hepatic dysfunction. ICU admission for organ support."
+    },
+    {
+        "id": "emg_006",
+        "topic": "Acute Respiratory Failure and ARDS",
+        "source": "ATS/ESICM/SCCM ARDS Guidelines",
+        "content": "Acute respiratory failure is inability to maintain adequate oxygenation or ventilation. Type 1 (hypoxemic): PaO2/FiO2 <300 (ARDS if bilateral infiltrates, non-cardiogenic). Type 2 (hypercapnic): CO2 retention from pump failure (COPD, neuromuscular). ARDS Berlin criteria: onset ≤1 week after clinical insult, bilateral chest opacities not fully explained by fluid/cardiac, PaO2/FiO2 <300 on PEEP ≥5. Causes: pneumonia, aspiration, sepsis, trauma, pancreatitis, transfusions. Treatment: lung-protective ventilation (tidal volume 6mL/kg IBW, plateau pressure <30 cmH2O, permissive hypercapnia), PEEP titration, prone positioning (>12h/day) for PaO2/FiO2 <150, neuromuscular blockade for severe ARDS, conservative fluid strategy after resuscitation, VTE prophylaxis. High-flow nasal cannula or NIV as bridge before intubation if awake and cooperative."
+    },
+    {
+        "id": "emg_007",
+        "topic": "Hypertensive Emergency vs Urgency",
+        "source": "AHA/ACC Hypertension Clinical Practice Guidelines",
+        "content": "Hypertensive emergency: severe BP elevation (typically >180/120 mmHg) WITH acute target-organ damage — hypertensive encephalopathy, acute MI, unstable angina, acute HF, aortic dissection, acute kidney injury, intracranial hemorrhage, eclampsia. Hypertensive urgency: severe elevation WITHOUT target-organ damage. Emergency management: IV medications (labetalol, nicardipine, sodium nitroprusside, clevidipine, esmolol for aortic dissection). Goal: reduce MAP by 10-20% in first hour, then cautiously to 160/100 over next 2-6 hours — avoid rapid drops causing ischemia. Exception: aortic dissection — target SBP <120 within 20 minutes. Hypertensive urgency: resume/intensify oral medications, close outpatient follow-up — IV therapy rarely needed. Identify and treat underlying cause."
+    },
+    {
+        "id": "emg_008",
+        "topic": "Status Epilepticus",
+        "source": "AAN/ILAE Status Epilepticus Guidelines 2023",
+        "content": "Status epilepticus (SE): continuous seizure activity ≥5 min OR 2+ seizures without return to baseline. Emergency — impending risk at T1 (5 min), irreversible neuronal injury at T2 (30 min). Causes: AED non-compliance, CNS infection, stroke, metabolic (hyponatremia, hypoglycemia), alcohol withdrawal, autoimmune encephalitis. Phase 1 (0-5 min): position patient, protect airway, oxygen, IV access, glucose. First-line (5-20 min): benzodiazepines — IV lorazepam 0.1 mg/kg (max 4mg) OR IM midazolam 10mg OR IV/rectal diazepam. Second-line (20-40 min): IV levetiracetam (60mg/kg) OR fosphenytoin (20 PE/kg) OR valproate (40mg/kg). Refractory SE (>40 min): anesthetic doses — midazolam infusion, propofol, ketamine, pentobarbital coma. EEG monitoring for non-convulsive SE. Treat underlying cause. Post-SE: maintain AED, investigate etiology."
+    },
+    {
+        "id": "emg_009",
+        "topic": "Acute Kidney Injury (AKI)",
+        "source": "KDIGO AKI Guidelines 2012 (updated 2023)",
+        "content": "AKI: increase in serum creatinine ≥0.3 mg/dL within 48h OR ≥1.5x baseline within 7 days OR urine output <0.5 mL/kg/h for ≥6h. KDIGO staging (1-3) guides management. Pre-renal (55%): hypovolemia, sepsis, heart failure → fluid resuscitation, treat underlying cause. Intrinsic (40%): ATN (ischemia/nephrotoxins), glomerulonephritis, interstitial nephritis, rhabdomyolysis. Post-renal (5%): obstruction → catheterize/relieve. Key metrics: urine sodium, FENa <1% (pre-renal), casts on microscopy. Avoid nephrotoxins: NSAIDs, aminoglycosides, contrast (use iso-osmolar, minimize volume). Treat hyperkalemia (ECG changes: widened QRS, peaked T waves) — calcium gluconate, insulin/dextrose, sodium bicarbonate, kayexalate, dialysis. Indications for emergent dialysis (AEIOU): Acidosis, Electrolytes, Intoxication, Overload, Uremia. Most pre-renal AKI resolves; ATN may take 1-3 weeks."
+    },
+    {
+        "id": "emg_010",
+        "topic": "Aortic Dissection",
+        "source": "ACC/AHA Thoracic Aortic Disease Guidelines",
+        "content": "Aortic dissection: tear in aortic intima allowing blood to enter the media, creating a false lumen. Stanford Type A: involves ascending aorta — surgical emergency. Stanford Type B: descending aorta only — medical management unless complicated. Classic presentation: sudden severe 'tearing' or 'ripping' chest/back pain, maximal at onset, unequal blood pressures in arms (>20 mmHg difference), pulse deficits. Risk factors: hypertension (most common), Marfan/Ehlers-Danlos syndrome, bicuspid aortic valve, cocaine, pregnancy. CT aortography (gold standard), TEE, MRA. Type A: emergency surgery (repair ascending aorta, correct AR, revascularize coronaries). Type B: aggressive BP control (target SBP 100-120 mmHg) with IV beta-blockers (esmolol/labetalol), then oral metoprolol. TEVAR (endovascular repair) for complicated Type B. Avoid thrombolytics — fatal hemorrhage risk."
+    }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "acp_001",
+    "topic": "Acute Chest Pain Initial Evaluation Checklist",
+    "source": "Emergency Department Triage Checklist",
+    "content": "For undifferentiated acute chest pain, immediate priorities are airway and circulation assessment, pulse oximetry, focused vitals, 12-lead ECG within 10 minutes, and cardiac biomarkers. High-risk red flags include hypotension, persistent severe pain, ischemic ECG changes, syncope, and signs of shock."
+  },
+  {
+    "id": "acp_002",
+    "topic": "Shortness of Breath Rapid Risk Stratification",
+    "source": "Acute Dyspnea Response Protocol",
+    "content": "Rapid dyspnea assessment should classify likely cardiac, pulmonary, metabolic, or anxiety-related causes. Concerning features include low oxygen saturation, respiratory distress, altered mentation, unilateral leg swelling, and chest pain. Initial diagnostics often include chest imaging, ECG, and targeted labs including BNP and blood gas when severe."
+  },
+  {
+    "id": "acp_003",
+    "topic": "Safe Discharge Criteria for Low-Risk Presentations",
+    "source": "Observation Unit Discharge Guidance",
+    "content": "Discharge after acute evaluation is safer when symptoms improve, hemodynamics are stable, oxygenation is normal, red flags are absent, and follow-up is secured. Clear return precautions should include worsening chest pain, fainting, new neurologic deficits, or breathlessness at rest."
+  }
+]
