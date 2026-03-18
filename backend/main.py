@@ -15,22 +15,22 @@ from pydantic import BaseModel
 from typing import Optional
 
 # ── Modular imports ───────────────────────────────────────────────────────────
-from backend.core.red_flag_engine import evaluate as red_flag_evaluate
-from backend.core.sanitizer import sanitize_text, sanitize_with_report
-from backend.council.orchestrator import run_divergence, run_convergence, run_synthesis, orchestrate
-from backend.council.groq_client import COUNCIL_MODELS
-from backend.rag.engine import get_rag_engine, rebuild_rag_engine
-from backend.rag.report_processor import process_report, get_all_reports, delete_report, get_report_text
-from backend.ml.symptom_classifier import get_classifier
-from backend.ml.federated_nn import get_federated_nn
-from backend.ml.feature_extractor import extract_features, interpret_vitals, CATEGORY_INFO
-from backend.storage.hospital_db import (
+from core.red_flag_engine import evaluate as red_flag_evaluate
+from core.sanitizer import sanitize_text, sanitize_with_report
+from council.orchestrator import run_divergence, run_convergence, run_synthesis, orchestrate
+from council.groq_client import COUNCIL_MODELS
+from rag.engine import get_rag_engine, rebuild_rag_engine
+from rag.report_processor import process_report, get_all_reports, delete_report, get_report_text
+from ml.symptom_classifier import get_classifier
+from ml.federated_nn import get_federated_nn
+from ml.feature_extractor import extract_features, interpret_vitals, CATEGORY_INFO
+from storage.hospital_db import (
     store_consultation, store_report_record,
     log_federated_contribution, get_records, get_db_stats,
 )
-from backend.federated.aggregator import receive_update, aggregate, get_latest_adapter, get_status
-from backend.federated.knowledge_sync import receive_knowledge_update, get_federated_kb_status
-from backend.config import get_settings
+from federated.aggregator import receive_update, aggregate, get_latest_adapter, get_status
+from federated.knowledge_sync import receive_knowledge_update, get_federated_kb_status
+from config import get_settings
 
 settings = get_settings()
 

@@ -93,7 +93,7 @@ interface UploadedReport {
 /* ── Member meta ───────────────────────────────────────────────────────────── */
 const MEMBER_META: Record<string, { label: string; model: string; provider: string; icon: ReactNode; color: string; bg: string; border: string }> = {
     member_a: { label: "Member A", model: "Llama 3.3 70B", provider: "Groq", icon: <Brain style={{ width: 14, height: 14 }} />, color: "#93c5fd", bg: "rgba(59,130,246,0.08)", border: "rgba(59,130,246,0.2)" },
-    member_b: { label: "Member B", model: "DeepSeek Chat", provider: "DeepSeek", icon: <Zap style={{ width: 14, height: 14 }} />, color: "#6ee7b7", bg: "rgba(16,185,129,0.08)", border: "rgba(16,185,129,0.2)" },
+    member_b: { label: "Member B", model: "DeepSeek Chat", provider: "OpenRouter", icon: <Zap style={{ width: 14, height: 14 }} />, color: "#6ee7b7", bg: "rgba(16,185,129,0.08)", border: "rgba(16,185,129,0.2)" },
     member_c: { label: "Member C", model: "Mistral Small", provider: "Mistral AI", icon: <Cpu style={{ width: 14, height: 14 }} />, color: "#c4b5fd", bg: "rgba(139,92,246,0.08)", border: "rgba(139,92,246,0.2)" },
 };
 

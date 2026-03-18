@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Optional
 import numpy as np
 from .dp_privacy import apply_dp, validate_update
-from backend.ml.federated_nn import NN_WEIGHT_DIM, get_federated_nn
+from ml.federated_nn import NN_WEIGHT_DIM, get_federated_nn
 
 ADAPTER_STORE_PATH = Path(__file__).parent.parent / "global_adapters"
 ADAPTER_STORE_PATH.mkdir(exist_ok=True)

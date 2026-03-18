@@ -2,16 +2,16 @@
 LLM Council — multi-provider client.
 
 Council roster:
-  Member A  — Groq   llama-3.3-70b-versatile   (fast 70B, deep reasoning)
-  Member B  — DeepSeek  deepseek-chat           (strong clinical logic)
-  Member C  — Mistral   mistral-small-latest    (diverse perspective)
-  Chairman  — Groq   llama-3.3-70b-versatile   (synthesis + final answer)
-  Reviewer  — Groq   llama-3.1-8b-instant      (fast convergence ranking)
+  Member A  — Groq        llama-3.3-70b-versatile   (fast 70B, deep reasoning)
+  Member B  — OpenRouter   deepseek/deepseek-chat    (strong clinical logic)
+  Member C  — OpenRouter   mistralai/mistral-small-latest (diverse perspective)
+  Chairman  — Groq        llama-3.3-70b-versatile   (synthesis + final answer)
+  Reviewer  — Groq        llama-3.1-8b-instant      (fast convergence ranking)
 
 Transport:
   Groq   → official AsyncGroq SDK
   Others → direct httpx POST to OpenAI-compatible /v1/chat/completions
-           (no Gemini SDK, no Mistral SDK — avoids broken installs on Windows)
+           (OpenRouter proxies DeepSeek + Mistral with a single key)
 """
 
 from __future__ import annotations
@@ -22,18 +22,18 @@ import json
 import httpx
 from groq import AsyncGroq
 
-from backend.config import get_settings
+from config import get_settings
 
 settings = get_settings()
 
 # ── Model roster ──────────────────────────────────────────────────────────────
 
 COUNCIL_MODELS = {
-    "member_a": {"model": "llama-3.3-70b-versatile", "provider": "groq"},
-    "member_b": {"model": "deepseek-chat",            "provider": "deepseek"},
-    "member_c": {"model": "mistral-small-latest",     "provider": "mistral"},
-    "chairman": {"model": "llama-3.3-70b-versatile", "provider": "groq"},
-    "reviewer": {"model": "llama-3.1-8b-instant",    "provider": "groq"},
+    "member_a": {"model": "llama-3.3-70b-versatile",          "provider": "groq"},
+    "member_b": {"model": "deepseek/deepseek-chat",           "provider": "openrouter"},
+    "member_c": {"model": "mistral-small-latest",             "provider": "mistral"},
+    "chairman": {"model": "llama-3.3-70b-versatile",          "provider": "groq"},
+    "reviewer": {"model": "llama-3.1-8b-instant",             "provider": "groq"},
 }
 
 # Provider endpoint map (OpenAI-compatible)
@@ -165,8 +165,8 @@ async def _query_member(
 
 async def query_council_parallel(sanitized_prompt: str) -> dict[str, str]:
     """
-    Stage 1 — Divergence: fan-out to Member A (Groq), B (DeepSeek), C (Mistral)
-    in parallel. Returns {member_name: raw_response_text}.
+    Stage 1 — Divergence: fan-out to Member A (Groq), B (OpenRouter/DeepSeek),
+    C (OpenRouter/Mistral) in parallel. Returns {member_name: raw_response_text}.
     """
     system_msg = {"role": "system", "content": COUNCIL_SYSTEM}
     user_msg   = {"role": "user",   "content": sanitized_prompt}

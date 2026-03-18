@@ -155,7 +155,7 @@ async def run_synthesis(sanitized_prompt: str, convergence_data: dict) -> dict:
     rev_map = {v: k for k, v in anon_map.items()}   # letter → member key
     provider_labels = {
         "member_a": "Groq/Llama-3.3-70B",
-        "member_b": "DeepSeek/DeepSeek-Chat",
+        "member_b": "OpenRouter/DeepSeek-Chat",
         "member_c": "Mistral/Mistral-Small",
     }
 
