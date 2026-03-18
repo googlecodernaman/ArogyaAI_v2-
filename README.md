@@ -55,7 +55,7 @@ MEDORBY is a **privacy-first medical AI assistant** that uses a multi-model **LL
 |-------|------------|
 | **Frontend** | Next.js 16 (App Router), React 19, Vanilla CSS, Lucide Icons |
 | **Backend** | FastAPI + Uvicorn (Python 3.12+) |
-| **LLM Council** | Groq Cloud — Llama 3.3 70B, Llama 3.1 8B, Qwen3 32B |
+| **LLM Council** | Groq (Llama 3.3 70B, Llama 3.1 8B), OpenRouter (DeepSeek Chat), Mistral AI (Mistral Small) |
 | **RAG Engine** | FAISS + TF-IDF Vectorizer (scikit-learn) |
 | **ML Classifier** | TF-IDF + Logistic Regression (scikit-learn) |
 | **Local Storage** | IndexedDB + AES-256-GCM (client), SQLite (server) |
@@ -68,29 +68,28 @@ MEDORBY is a **privacy-first medical AI assistant** that uses a multi-model **LL
 ## 📂 Project Structure
 
 ```
-MVP/
-├── README.md                          ← You are here
-├── FEATURES.md                        ← Detailed feature documentation
-├── ARCHITECTURE.md                    ← System architecture & implementation
+AarogyaAI/
+├── README.md
 ├── .gitignore
-├── start_backend.ps1                  ← One-click backend launcher
-├── start_frontend.ps1                 ← One-click frontend launcher
 │
 ├── backend/
 │   ├── main.py                        ← FastAPI entry point (all API routes)
 │   ├── config.py                      ← Pydantic settings (.env loader)
 │   ├── requirements.txt               ← Python dependencies
-│   ├── .env.example                   ← Environment variable template
+│   ├── .env                           ← API keys (gitignored — see setup below)
 │   │
 │   ├── core/                          ← Core utilities
-│   │   └── red_flag_engine.py         ← Deterministic emergency detection
+│   │   ├── red_flag_engine.py         ← Deterministic emergency detection
+│   │   └── sanitizer.py              ← Server-side PII sanitizer
 │   │
 │   ├── council/                       ← LLM Council module
-│   │   ├── groq_client.py             ← Groq API client + model config
-│   │   └── orchestrator.py            ← 3-stage orchestration logic
+│   │   ├── groq_client.py             ← Multi-provider LLM client (Groq, OpenRouter, Mistral)
+│   │   └── orchestrator.py            ← 3-stage orchestration (Divergence → Convergence → Synthesis)
 │   │
 │   ├── ml/                            ← Machine Learning module
-│   │   └── symptom_classifier.py      ← Local symptom classifier (TF-IDF + LR)
+│   │   ├── symptom_classifier.py      ← Local symptom classifier (TF-IDF + LR)
+│   │   ├── federated_nn.py            ← Federated neural network (12→32→64→32→5)
+│   │   └── feature_extractor.py       ← Structured vital sign feature extraction
 │   │
 │   ├── rag/                           ← RAG module
 │   │   ├── engine.py                  ← FAISS-based retrieval engine
@@ -101,28 +100,27 @@ MVP/
 │   │
 │   ├── federated/                     ← Federated Learning module
 │   │   ├── aggregator.py              ← FedAvg gradient aggregator
-│   │   └── dp_privacy.py              ← Differential privacy utilities
+│   │   ├── dp_privacy.py              ← Differential privacy utilities
+│   │   └── knowledge_sync.py          ← Federated knowledge base sync
 │   │
-│   ├── knowledge_base/                ← Curated medical knowledge
-│   │   └── heart_knowledge.json       ← 15 AHA/ACC/WHO heart documents
+│   ├── knowledge_base/                ← Curated medical knowledge (JSON)
 │   │
-│   ├── data/                          ← Runtime data (auto-created, gitignored)
-│   │   └── hospital_local.db
-│   └── user_reports/                  ← Uploaded reports (gitignored)
+│   └── tests/                         ← Backend test suite (55 tests)
+│       ├── test_routes.py
+│       ├── test_sanitizer.py
+│       └── test_hybrid_fusion.py
 │
 └── frontend/
     ├── package.json
     ├── next.config.ts
-    ├── .env.local                     ← Backend URL config
     │
     └── src/
         ├── app/
         │   ├── layout.tsx             ← Root layout + fonts
         │   ├── page.tsx               ← Landing page + consultation UI
-        │   ├── globals.css            ← Full design system (vanilla CSS)
-        │   └── favicon.ico
+        │   └── globals.css            ← Full design system (vanilla CSS)
         ├── components/
-        │   └── ChatInterface.tsx      ← Main consultation interface
+        │   └── ChatInterface.tsx      ← Main consultation interface (SSE + council UI)
         └── lib/
             ├── sanitizer.ts           ← Client-side PII sanitizer
             ├── local_learning.ts      ← Federated learning client
@@ -137,13 +135,22 @@ MVP/
 
 - **Python 3.12+** with `pip`
 - **Node.js 18+** with `npm`
-- **Groq API Key** — Get one free at [console.groq.com](https://console.groq.com)
+- API keys (at least one required):
+  - **Groq** (free) — [console.groq.com](https://console.groq.com) — powers Member A, Chairman, Reviewer
+  - **OpenRouter** — [openrouter.ai](https://openrouter.ai) — powers Member B (DeepSeek Chat)
+  - **Mistral AI** — [console.mistral.ai](https://console.mistral.ai) — powers Member C
 
-### 1. Clone & Setup Backend
+### 1. Clone the Repository
 
 ```bash
-# Navigate to project
-cd MVP/backend
+git clone https://github.com/googlecodernaman/ArogyaAI_v2-.git
+cd ArogyaAI_v2-
+```
+
+### 2. Setup Backend
+
+```bash
+cd backend
 
 # Create and activate virtual environment
 python -m venv venv
@@ -152,29 +159,43 @@ python -m venv venv
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-# Edit .env and set your GROQ_API_KEY
 ```
 
-### 2. Start Backend
+### 3. Configure API Keys
+
+Create a `.env` file inside the `backend/` directory:
+
+```env
+# ── LLM Council (required) ─────────────────────────
+GROQ_API_KEY=gsk_your_groq_key_here
+OPENROUTER_API_KEY=sk-or-v1-your_openrouter_key_here
+MISTRAL_API_KEY=your_mistral_key_here
+
+# ── Optional ────────────────────────────────────────
+FEDERATED_SECRET_KEY=your_random_secret
+```
+
+> 🔒 The `.env` file is **gitignored** — your API keys will never be committed.
+
+### 4. Start Backend
 
 ```bash
 cd backend
-uvicorn main:app --reload --port 8000
+python -m uvicorn main:app --host 127.0.0.1 --port 8000
 ```
 
 You should see:
 ```
 [HospitalDB] Database initialized.
 [SymptomClassifier] Trained on 64 examples, 5 categories.
-[RAG] Indexed 16 documents.
+[RAG] Indexed 65+ documents.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8000
 ```
 
-### 3. Setup & Start Frontend
+### 5. Setup & Start Frontend
+
+Open a **new terminal**:
 
 ```bash
 cd frontend
@@ -182,17 +203,54 @@ npm install
 npm run dev
 ```
 
-### 4. Open the App
+### 6. Open the App
 
 Visit **[http://localhost:3000](http://localhost:3000)** in your browser. 🎉
 
-### One-Click Start (Windows)
+### Verify Backend Health
 
-You can also use the PowerShell launcher scripts:
+```bash
+curl http://localhost:8000/health
+```
 
-```powershell
-.\start_backend.ps1    # Launches backend in a new window
-.\start_frontend.ps1   # Launches frontend in a new window
+Expected response:
+```json
+{
+  "status": "ok",
+  "service": "MEDORBY API",
+  "version": "2.0.0",
+  "models": {
+    "member_a": { "model": "llama-3.3-70b-versatile", "provider": "groq" },
+    "member_b": { "model": "deepseek/deepseek-chat", "provider": "openrouter" },
+    "member_c": { "model": "mistral-small-latest", "provider": "mistral" },
+    "chairman": { "model": "llama-3.3-70b-versatile", "provider": "groq" },
+    "reviewer": { "model": "llama-3.1-8b-instant", "provider": "groq" }
+  }
+}
+```
+
+---
+
+## 🧠 LLM Council Architecture
+
+The council uses a 3-stage protocol for robust clinical reasoning:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        STAGE 1: DIVERGENCE                         │
+│                                                                     │
+│  Member A (Groq/Llama 70B) ────┐                                   │
+│  Member B (OpenRouter/DeepSeek) ├──→ 3 independent clinical opinions│
+│  Member C (Mistral/Small) ─────┘                                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                        STAGE 2: CONVERGENCE                        │
+│                                                                     │
+│  Reviewer (Groq/Llama 8B) ──→ Ranks all 3 opinions blindly        │
+├─────────────────────────────────────────────────────────────────────┤
+│                        STAGE 3: SYNTHESIS                          │
+│                                                                     │
+│  Chairman (Groq/Llama 70B) ──→ Final consensus answer              │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -220,6 +278,17 @@ You can also use the PowerShell launcher scripts:
 | `GET` | `/api/federated/status` | Aggregator status |
 | `POST` | `/api/federated/kb/update` | Submit sanitized federated KB entry |
 | `GET` | `/api/federated/kb/status` | Federated KB + RAG status |
+
+---
+
+## 🧪 Running Tests
+
+```bash
+cd backend
+python -m pytest tests/ -v
+```
+
+Expected: **55 tests pass** covering routes, sanitizer, and hybrid fusion logic.
 
 ---
 
