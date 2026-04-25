@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">🏥 MEDORBY</h1>
+  <h1 align="center">🏥 AarogyaAI</h1>
   <p align="center"><strong>Privacy-First Medical AI with LLM Council, RAG, and Federated Learning</strong></p>
   <p align="center">
     <em>Your medical data never leaves your device. Period.</em>
@@ -16,9 +16,9 @@
 
 ---
 
-## What is MEDORBY?
+## What is  AarogyaAI?
 
-MEDORBY is a **privacy-first medical AI assistant** that uses a multi-model **LLM Council** to provide clinical reasoning about symptoms. Unlike traditional health chatbots, MEDORBY:
+ AarogyaAI is a **privacy-first medical AI assistant** that uses a multi-model **LLM Council** to provide clinical reasoning about symptoms. Unlike traditional health chatbots, MEDORBY:
 
 - **Never sends your raw medical data to the cloud** — all PII is stripped client-side
 - **Runs a local ML classifier** on your device before any API calls
@@ -26,7 +26,7 @@ MEDORBY is a **privacy-first medical AI assistant** that uses a multi-model **LL
 - **Lets you upload medical reports** that stay on your machine
 - **Improves over time** through Federated Learning without sharing your data
 
-> ⚠️ **Disclaimer**: MEDORBY is a research project and NOT a replacement for professional medical advice. Always consult a qualified healthcare provider for medical decisions.
+> ⚠️ **Disclaimer**:  AarogyaAI is a research project and NOT a replacement for professional medical advice. Always consult a qualified healthcare provider for medical decisions.
 
 ---
 
